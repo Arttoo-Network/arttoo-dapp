@@ -16,23 +16,28 @@ export default function Component() {
           <MenuIcon className="h-6 w-6" />
         </div>
       </div> */}
-      <div className="mx-4 my-2 p-4 rounded-lg bg-[#D9FFF8]">
-        <div className="mb-2 text-lg font-semibold">External wallet</div>
-        <div className="text-sm text-gray-600">Wallet tokens can be used for future voting</div>
-        <div className="flex items-center justify-between mt-4">
+      <div className="mx-2.5 my-2 p-4 rounded-2xl bg-gradient-to-b	 from-[#A5F4E1] shadow" >
+        <div className="mb-1 text-base font-semibold">External wallet</div>
+        <div className="text-xs text-gray-600">Wallet tokens can be used for future voting</div>
+        <div className="flex items-center justify-between mt-4 mb-4">
           <div className="flex items-center space-x-2">
             <WalletIcon className="h-6 w-6" />
             <div>ox2846...f9g9sn</div>
           </div>
           <div className="text-lg font-bold">1200 Token</div>
         </div>
+        <div className="text-5xl font-sans font-square flex justify-center bg-gradient-to-r text-gradient from-[#2AE5FF] to-[#F471FF] text-transparent bg-clip-text">
+            <span className="mr-2 ">1,200</span>
+            <span>$ART</span>
+          </div>
       </div>
-      <div className="mx-4 my-2 flex justify-between">
+      <div className="mx-2.5 mt-5 mb-2 flex justify-between">
         <div className="text-xl font-bold">kick-backs</div>
-        <Button className="bg-[#D9FFF8] text-black">Claim in full</Button>
+        <Button className="rounded-lg	 text-sm bg-gradient-to-r from-[#C7FBB9] via-[#B5F2E3] to-[#9FF4C6] text-black">Claim in full</Button>
       </div>
-      <div className="mx-4 my-2 grid gap-4">
-        <div className="flex items-center justify-between p-4 rounded-lg bg-white">
+      <div className="mx-4 my-2 grid gap-2">
+        <div className="flex items-start justify-between p-3 rounded-lg bg-white shadow-md">
+          <div className="flex items-center ">
           <img
             alt="Yayoi Kusama artwork"
             className="h-20 w-20"
@@ -44,83 +49,12 @@ export default function Component() {
             }}
             width="80"
           />
-          <div>
-            <div className="font-bold">Yayoi Kusama</div>
-            <div>Infinity net [FKQS](2016)</div>
+          <div className="pl-3">
+            <div className=" text-base font-bold">Yayoi Kusama</div>
+            <div className="text-sm">Infinity net [FKQS](2016)</div>
           </div>
-          <div className="text-lg font-bold text-green-600">+300</div>
-        </div>
-        <div className="flex items-center justify-between p-4 rounded-lg bg-white">
-          <img
-            alt="Laura Owens artwork"
-            className="h-20 w-20"
-            height="80"
-            src="https://placehold.co/70x70"
-            style={{
-              aspectRatio: "80/80",
-              objectFit: "cover",
-            }}
-            width="80"
-          />
-          <div>
-            <div className="font-bold">Laura Owens</div>
-            <div>Untitled (2013)</div>
           </div>
-          <div className="text-lg font-bold text-green-600">+100</div>
-        </div>
-        <div className="flex items-center justify-between p-4 rounded-lg bg-white">
-          <img
-            alt="Jean-Michel Basquiat artwork"
-            className="h-20 w-20"
-            height="80"
-            src="https://placehold.co/70x70"
-            style={{
-              aspectRatio: "80/80",
-              objectFit: "cover",
-            }}
-            width="80"
-          />
-          <div>
-            <div className="font-bold">Jean-Michel Basquiat</div>
-            <div>Pollo Frito (1982)</div>
-          </div>
-          <div className="text-lg font-bold text-green-600">+300</div>
-        </div>
-        <div className="flex items-center justify-between p-4 rounded-lg bg-white">
-          <img
-            alt="Robert Ryman artwork"
-            className="h-20 w-20"
-            height="80"
-            src="https://placehold.co/70x70"
-            style={{
-              aspectRatio: "80/80",
-              objectFit: "cover",
-            }}
-            width="80"
-          />
-          <div>
-            <div className="font-bold">Robert Ryman</div>
-            <div>File (1997)</div>
-          </div>
-          <div className="text-lg font-bold text-green-600">+150</div>
-        </div>
-        <div className="flex items-center justify-between p-4 rounded-lg bg-white">
-          <img
-            alt="Elizabeth Peyton artwork"
-            className="h-20 w-20"
-            height="80"
-            src="https://placehold.co/70x70"
-            style={{
-              aspectRatio: "80/80",
-              objectFit: "cover",
-            }}
-            width="80"
-          />
-          <div>
-            <div className="font-bold">Elizabeth Peyton</div>
-            <div>Piotr Uklanski (1996)</div>
-          </div>
-          <div className="text-lg font-bold text-green-600">+200</div>
+          <div className="text-lg font-bold">+300</div>
         </div>
       </div>
     </div>
