@@ -4,6 +4,7 @@ import Web3Provider from '@contexts/Web3Context';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../theme/globals.css';
+import { AppWithProvider } from '@contexts/ThirdWeb/ThirdwebProvider';
 
 const CreateNextjsDapp = ({ Component, pageProps }: AppProps) => {
 	return (
@@ -26,10 +27,10 @@ const CreateNextjsDapp = ({ Component, pageProps }: AppProps) => {
 			</Head>
 
 			<ResponsiveProvider>
-				<Web3Provider>
+				<AppWithProvider>
 					<Navbar />
 					<Component {...pageProps} />
-				</Web3Provider>
+				</AppWithProvider>
 			</ResponsiveProvider>
 		</>
 	);
