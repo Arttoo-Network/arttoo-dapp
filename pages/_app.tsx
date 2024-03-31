@@ -28,8 +28,13 @@ const CreateNextjsDapp = ({ Component, pageProps }: AppProps) => {
 
 			<ResponsiveProvider>
 				<AppWithProvider>
-					<Navbar />
-					<Component {...pageProps} />
+					<div className='h-screen flex flex-col'>
+						<Navbar />
+						<div className='flex-1'>
+							<Component {...pageProps} />
+						</div>
+						<footer className= "bg-black h-12 sticky bottom-0 z-40 w-full flex-none"></footer>
+					</div>
 				</AppWithProvider>
 			</ResponsiveProvider>
 		</>
