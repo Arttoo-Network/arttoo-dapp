@@ -67,24 +67,9 @@ const Navbar = () => {
 						client={client}
 						wallets={wallets}
 						connectButton={connectButton}
-            detailsButton={{
-              balanceToken:{
-                // show USDC balance when connected to Ethereum mainnet
-                1: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
-              }
-            }}
             connectModal={{
               showThirdwebBranding: false,
               size: "compact",
-              welcomeScreen: {
-                title: "Custom Title",
-                subtitle: "Custom Subtitle",
-                img: {
-                  src: "https://example.com/image.png",
-                  width: 100,
-                  height: 100,
-                },
-              },
             }}
 						onConnect={(wallet) => {
 							console.log("Connected to wallet", wallet, wallet.getConfig(), wallet.getAccount());
