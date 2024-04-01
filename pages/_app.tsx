@@ -5,6 +5,10 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../theme/globals.css';
 import { AppWithProvider } from '@contexts/ThirdWeb/ThirdwebProvider';
+import {APIProvider, Map} from '@vis.gl/react-google-maps';
+
+const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''
+
 
 const CreateNextjsDapp = ({ Component, pageProps }: AppProps) => {
 	return (
@@ -28,8 +32,10 @@ const CreateNextjsDapp = ({ Component, pageProps }: AppProps) => {
 
 			<ResponsiveProvider>
 				<AppWithProvider>
+					<APIProvider apiKey={apiKey}>
 					<Navbar />
 					<Component {...pageProps} />
+					</APIProvider>
 				</AppWithProvider>
 			</ResponsiveProvider>
 		</>
