@@ -32,10 +32,16 @@ const CreateNextjsDapp = ({ Component, pageProps }: AppProps) => {
 
 			<ResponsiveProvider>
 				<AppWithProvider>
+					<div className='h-screen flex flex-col'>
 					<APIProvider apiKey={apiKey}>
-					<Navbar />
-					<Component {...pageProps} />
+						<Navbar />
+						<div className='flex-1'>
+							<Component {...pageProps} />
+						</div>
+						<footer className= "bg-black h-12 sticky bottom-0 z-40 w-full flex-none"></footer>
 					</APIProvider>
+
+					</div>
 				</AppWithProvider>
 			</ResponsiveProvider>
 		</>

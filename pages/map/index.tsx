@@ -1,6 +1,7 @@
 import React from 'react'
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import {APIProvider, Map} from '@vis.gl/react-google-maps';
+import {APIProvider, Map, useMarkerRef, Marker, AdvancedMarker, Pin} from '@vis.gl/react-google-maps';
+
 
 
 const containerStyle = {
@@ -14,7 +15,11 @@ const center = {
 };
 const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''
 console.log('apiKey', apiKey)
+console.log('apiKey', apiKey)
 function MyComponent() {
+  const [markerRef, marker] = useMarkerRef();
+  const [markerRef2] = useMarkerRef();
+
   return (
     <Map
       style={{width: '100vw', height: '100vh'}}
@@ -22,7 +27,20 @@ function MyComponent() {
       defaultZoom={3}
       gestureHandling={'greedy'}
       disableDefaultUI={true}
-    />
+      mapId={'b1b1b1b1b1b1b1b1'}
+    >
+      {/* <Marker ref={markerRef} position={{lat: 53.54992, lng: 10.00678}} /> */}
+      <AdvancedMarker position={{lat: 53.54992, lng: 10.00678}}>
+        <Pin background={'#FBBC04'} glyphColor={'#000'} borderColor={'#000'} />
+      </AdvancedMarker>
+
+      <AdvancedMarker
+        // className={customMarker}
+        position={{lat: 53.54992, lng: 10.00678}}>
+        <h2>I am so customized</h2>
+        <p>That is pretty awesome!</p>
+      </AdvancedMarker>
+    </Map>
   )
 }
 
