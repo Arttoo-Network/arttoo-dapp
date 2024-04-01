@@ -1,3 +1,5 @@
+"use client"
+
 // import Button from '@components/default/Button';
 import Text from '@components/default/Text';
 import { ETextType } from '@components/default/Text/Text.enum';
@@ -46,9 +48,10 @@ const Navbar = () => {
 		label: "Sign in",
 		className: "p-0",
 		style: {
-			borderRadius: "10px",
-			backgroundColor: "#fff",
+			// borderRadius: "10px",
+			backgroundColor: "#1212",
 			color: "#000",
+      ESize: "s",
 		},
 	}
   const [show, setShow] = useState(false);
@@ -68,8 +71,18 @@ const Navbar = () => {
 						client={client}
 						wallets={wallets}
 						connectButton={connectButton}
+            connectModal={{
+              showThirdwebBranding: false,
+              size: "compact",
+            }}
+						onConnect={(wallet) => {
+							console.log("Connected to wallet", wallet, wallet.getConfig(), wallet.getAccount());
+						}}
 					/>
-          <Button onClick={taggle} className="flex items-center" variant="ghost">
+          {/* <a className="twitter-share-button"
+  href="https://twitter.com/intent/tweet">
+Tweet</a> */}
+          <Button className="flex items-center" variant="ghost">
             <MenuIcon className="w-6 h-6" />
           </Button>
         </div>
