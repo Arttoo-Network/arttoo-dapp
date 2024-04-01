@@ -1,3 +1,5 @@
+"use client"
+
 // import Button from '@components/default/Button';
 import Text from '@components/default/Text';
 import { ETextType } from '@components/default/Text/Text.enum';
@@ -45,9 +47,10 @@ const Navbar = () => {
 		label: "Sign in",
 		className: "my-custom-class",
 		style: {
-			borderRadius: "10px",
-			backgroundColor: "#fff",
+			// borderRadius: "10px",
+			backgroundColor: "#1212",
 			color: "#000",
+      ESize: "s",
 		},
 	}
   return (
@@ -64,7 +67,32 @@ const Navbar = () => {
 						client={client}
 						wallets={wallets}
 						connectButton={connectButton}
+            detailsButton={{
+              balanceToken:{
+                // show USDC balance when connected to Ethereum mainnet
+                1: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+              }
+            }}
+            connectModal={{
+              showThirdwebBranding: false,
+              size: "compact",
+              welcomeScreen: {
+                title: "Custom Title",
+                subtitle: "Custom Subtitle",
+                img: {
+                  src: "https://example.com/image.png",
+                  width: 100,
+                  height: 100,
+                },
+              },
+            }}
+						onConnect={(wallet) => {
+							console.log("Connected to wallet", wallet, wallet.getConfig(), wallet.getAccount());
+						}}
 					/>
+          {/* <a className="twitter-share-button"
+  href="https://twitter.com/intent/tweet">
+Tweet</a> */}
           <Button className="flex items-center" variant="ghost">
             <MenuIcon className="w-6 h-6" />
           </Button>
