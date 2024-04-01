@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -80,7 +82,10 @@ export default function Component() {
             </div>
           </section>
           <section className="pb-5">
-            <div className="text-xs flex items-center border-b py-4 ">
+            <a
+              className="text-xs flex items-center border-b py-4"
+              href="https://twitter.com/intent/tweet?text=Hello%20world"
+            >
               <Image
                 className="mr-2"
                 src="/assets/twitter.png"
@@ -89,7 +94,7 @@ export default function Component() {
                 height={20} // 可选，图片的高度
               />
               Share it on Twitter
-            </div>
+            </a>
             <div className="text-xs flex items-center py-4">
               <Image
                 className="mr-2"
@@ -108,7 +113,7 @@ export default function Component() {
   );
 }
 
-function InfoIcon(props) {
+function InfoIcon(props: any) {
   return (
     <svg
       {...props}

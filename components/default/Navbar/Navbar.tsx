@@ -63,11 +63,6 @@ const Navbar = () => {
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold"><Logo/></h1>
         <div className="flex items-center">
-          {/* <LogInIcon className="w-5 h-5" /> */}
-          <a className="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=Hello%20world">
-Tweet</a>
-          
 					<ConnectButton
           
 						theme={"light"}
@@ -82,9 +77,6 @@ Tweet</a>
 							console.log("Connected to wallet", wallet, wallet.getConfig(), wallet.getAccount());
 						}}
 					/>
-          {/* <a className="twitter-share-button"
-  href="https://twitter.com/intent/tweet">
-Tweet</a> */}
           <Button className="flex items-center" variant="ghost">
             <MenuIcon className="w-6 h-6" />
           </Button>
@@ -98,7 +90,7 @@ Tweet</a> */}
   )
 }
 
-function LogInIcon(props) {
+function LogInIcon(props: any) {
   return (
 <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
     <rect width="15" height="15" fill="url(#pattern0)"/>
@@ -114,7 +106,7 @@ function LogInIcon(props) {
 }
 
 
-function MenuIcon(props) {
+function MenuIcon(props: any) {
   return (
     <svg
       {...props}

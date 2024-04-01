@@ -24,7 +24,7 @@ export default function Component() {
   )
 }
 
-function SunIcon(props) {
+function SunIcon(props: any) {
   return (
     <svg
       {...props}
