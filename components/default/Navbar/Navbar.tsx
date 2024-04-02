@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ConnectButton } from "thirdweb/react";
 import { createWallet } from "thirdweb/wallets";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const wallets = [
   createWallet("io.metamask"),
@@ -22,6 +23,17 @@ const client = {
 };
 
 const Navbar = () => {
+  const router = useRouter();
+  const menuList = [
+    {
+      name: 'Map Home',
+      path: '/map'
+    },
+    {
+      name: 'token reward',
+      path: '/token_reward'
+    },
+  ]
   const activeAccount = useActiveAccount();
 
   const connectButton = {
@@ -33,6 +45,7 @@ const Navbar = () => {
     className: "p-0 ",
     style: {
       backgroundColor: "#fff",
+      padding: 0,
       color: "#000",
     },
   };
@@ -40,7 +53,8 @@ const Navbar = () => {
     render: () => (
       <div className="flex items-center text-xs">
         <LogInIcon className="w-5 h-5" />
-        {activeAccount?.address?.slice(0, 5)}...{activeAccount?.address?.slice(-4)}
+        {activeAccount?.address?.slice(0, 5)}...
+        {activeAccount?.address?.slice(-4)}
       </div>
     ),
   };
@@ -49,14 +63,17 @@ const Navbar = () => {
     event.stopPropagation();
     setShow(!show);
   };
+  const closeMenu = () => {
+    setShow(false);
+  };
   useEffect(() => {
-    document.addEventListener('click', toggle)
+    document.addEventListener("click", closeMenu);
     return () => {
-      document.removeEventListener('click', toggle)
-    }
-  })
+      document.removeEventListener("click", closeMenu);
+    };
+  });
   return (
-    <header className="bg-white sticky top-0 z-40 w-full px-4 py-3 shadow-md">
+    <header className="bg-white sticky top-0 z-40 w-full px-4 py-1 shadow-md">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">
           <Logo />
@@ -93,8 +110,13 @@ const Navbar = () => {
       </div>
       {show && (
         <div className="absolute left-0 w-full animation-fade text-xs bg-white shadow-md">
-          <div className="border-b p-5">Map Home</div>
-          <div className="p-5">token reward</div>
+          {menuList.map((item) => (  <div
+          key={item.name}
+            onClick={() => router.push(item.path)}
+            className="border-b p-5"
+          >
+            {item.name}
+          </div>))}
         </div>
       )}
     </header>
