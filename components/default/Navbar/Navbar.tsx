@@ -101,7 +101,7 @@ const Navbar = () => {
   );
 };
 
-function LogInIcon(props) {
+function LogInIcon(props: any) {
   return (
     <svg
       className="mr-2"

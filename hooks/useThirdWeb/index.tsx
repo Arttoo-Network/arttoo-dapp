@@ -1,5 +1,5 @@
 import { createThirdwebClient } from "thirdweb";
-import { useConnect } from "thirdweb/react";
+import { useActiveWalletConnectionStatus, useConnect } from "thirdweb/react";
 import { createWallet, injectedProvider } from "thirdweb/wallets";
 
 const clientId = process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID || "";
@@ -25,6 +25,8 @@ function Example() {
               walletConnect: { showQrModal: true },
             });
           }
+
+          console.log("Connected to Metamask", metamask);
 
           // return the wallet
           return metamask;

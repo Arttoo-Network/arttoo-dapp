@@ -53,7 +53,7 @@ export default function Component() {
   )
 }
 
-function MenuIcon(props) {
+function MenuIcon(props: any) {
   return (
     <svg 
     { ...props }
@@ -72,7 +72,7 @@ function MenuIcon(props) {
 }
 
 
-function WalletIcon(props) {
+function WalletIcon(props: any) {
   return (
     <svg
       {...props}
