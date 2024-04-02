@@ -1,0 +1,10 @@
+@baseUri=http://127.0.0.1:3000/api 
+
+### insert artwork
+POST {{baseUri}}/user-create
+Content-Type: application/json
+
+{
+  "wallet_address": "0x1234567890",
+  "wallet_type": "metamask"
+}

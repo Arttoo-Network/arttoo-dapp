@@ -1,8 +1,8 @@
-import React from 'react'
+'use client'
+
+import React, { use, useEffect, useState } from 'react'
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import {APIProvider, Map, useMarkerRef, Marker, AdvancedMarker, Pin} from '@vis.gl/react-google-maps';
-
-
 
 const containerStyle = {
   width: '400px',
@@ -17,8 +17,35 @@ const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''
 console.log('apiKey', apiKey)
 console.log('apiKey', apiKey)
 function MyComponent() {
+  
   const [markerRef, marker] = useMarkerRef();
   const [markerRef2] = useMarkerRef();
+
+  const [artworks, setArtworks] = useState([])
+
+  const hello = async () => {
+    const uri = "/api/hello";
+
+    const resp = await fetch(uri, {
+      method: "GET",
+    });
+  }
+
+  const getArtworks = async () => {
+    const uri = "/api/artworks-all"; 
+
+    const resp = await fetch(uri, {
+      method: "GET",
+    });
+
+    const data = await resp.json();
+    setArtworks(data)
+  }
+
+  useEffect(() => {
+    hello()
+    getArtworks()
+  }, [])
 
   return (
     <Map

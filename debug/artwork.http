@@ -1,0 +1,57 @@
+@baseUri=http://127.0.0.1:3000/api 
+
+### insert artwork
+POST {{baseUri}}/artwork-create
+Content-Type: application/json
+
+{
+    "name": "Artwork 3",
+    "image": "https://via.placeholder.com/150",
+    "image_width": 150,
+    "image_height": 150,
+    "description": "Description 3",
+    "token": 2,
+    "author": "Author 3",
+    "author_avatar": "https://via.placeholder.com/150",
+    "longitude": 1.0,
+    "latitude": 1.0,
+    "address": "Address 3"
+}
+
+### get all artworks
+GET {{baseUri}}/artworks-all
+Content-Type: application/json
+
+### get artwork by id
+POST  {{baseUri}}/artwork-get
+Content-Type: application/json
+
+{
+    "id": 2
+}
+
+
+### update artwork by id
+PUT {{baseUri}}/artwork-update
+Content-Type: application/json
+
+{
+    "name": "Artwork 2222",
+    "image": "https://via.placeholder.com/150",
+    "image_width": 150,
+    "image_height": 150,
+    "description": "Description 2",
+    "token": 1,
+    "author": "Author 2",
+    "author_avatar": "https://via.placeholder.com/150",
+    "id": 2
+}
+
+### delete artwork by id
+DELETE {{baseUri}}/artwork-delete
+Content-Type: application/json
+
+{
+    "id": 1
+}
+
