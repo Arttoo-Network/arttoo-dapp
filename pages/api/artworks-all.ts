@@ -4,6 +4,5 @@ import { fetchArtworks } from "services/artwork";
  
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const artworks = await fetchArtworks();
-  console.log('artworks', artworks);
     res.status(200).json(artworks);
 }

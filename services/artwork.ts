@@ -4,7 +4,8 @@ import { Artwork } from '../types/artwork';
 
 export async function saveArtwork(artwork: Artwork) {
   try {
-    await insertArtwork(artwork);
+    const ret = await insertArtwork(artwork);
+    return ret;
   } catch (e) {
     console.log('save artwork failed: ', e);
   }

@@ -5,6 +5,10 @@ POST {{baseUri}}/user-create
 Content-Type: application/json
 
 {
-  "wallet_address": "0x1234567890",
+  "wallet_address": "0x62a412068aBb2F85590EE8986c7F80eDFa1F4439",
   "wallet_type": "metamask"
 }
+
+### get users
+GET {{baseUri}}/users-get
+Content-Type: application/json

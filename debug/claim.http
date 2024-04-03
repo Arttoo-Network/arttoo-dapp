@@ -1,0 +1,11 @@
+@baseUri=http://127.0.0.1:3000/api 
+
+### submit claim
+POST {{baseUri}}/claim-submit
+Content-Type: application/json
+
+{
+  "wallet_address": "walle",
+  "wallet_type": "metamask",
+  "artwork_id": 1
+}

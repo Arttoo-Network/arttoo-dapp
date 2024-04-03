@@ -1,106 +1,146 @@
 import { Artwork } from "types/artwork";
 import { getDb } from "models/db";
-import exp from "constants";
+import { QueryResult } from "pg";
 
-export async function insertArtwork(artwork: Artwork) {
-  const createdAt: string = new Date().toISOString();
-
+export async function insertArtwork(artwork: Artwork): Promise<QueryResult<any>> {
+  const createdAt = new Date().toISOString();
   const db = await getDb();
-  const res = await db.query(
-    `INSERT INTO artworks 
-      (name, image, image_width, image_height, description, token, author, author_avatar, longitude, latitude, address, created_at)
-      VALUES 
-      ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-  `,
-    [
-      artwork.name,
-      artwork.image,
-      artwork.image_width,
-      artwork.image_height,
-      artwork.description,
-      artwork.token,
-      artwork.author,
-      artwork.author_avatar,
-      artwork.longitude,
-      artwork.latitude,
-      artwork.address,
-      createdAt,
-    ]
-  );
 
-  return res;
+  const query = `
+    INSERT INTO artworks (
+      name, image, image_width, image_height, description, token, author, author_avatar, longitude, latitude, address, created_at
+    ) VALUES (
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
+    ) RETURNING id
+  `;
+
+  const values = [
+    artwork.name,
+    artwork.image,
+    artwork.image_width,
+    artwork.image_height,
+    artwork.description,
+    artwork.token,
+    artwork.author,
+    artwork.author_avatar,
+    artwork.longitude,
+    artwork.latitude,
+    artwork.address,
+    createdAt,
+  ];
+
+  try {
+    const result = await db.query(query, values);
+    return result;
+  } catch (error) {
+    console.error('Error inserting artwork:', error);
+    throw error;
+  }
 }
 
-export async function getArtworks() {
+export async function getArtworks(): Promise<Artwork[]> {
   const db = await getDb();
-  const res = await db.query(`SELECT * FROM artworks`);
-  console.log('getArtworks', res.rows);
-  return res.rows;
+
+  const query = `
+    SELECT id, name, image, image_width, image_height, description, token, author, author_avatar, longitude, latitude, address, created_at
+    FROM artworks
+    ORDER BY created_at DESC
+  `;
+
+  try {
+    const { rows } = await db.query(query);
+    return rows;
+  } catch (error) {
+    console.error('Error getting artworks:', error);
+    throw error;
+  }
 }
 
-export async function findArtworkById(id: number) {
+export async function findArtworkById(id: number): Promise<Artwork | undefined> {
   const db = await getDb();
-  const res = await db.query(`SELECT * FROM artworks WHERE id = $1`, [id]);
+  const query = `
+    SELECT name, image, image_width, image_height, description, token, author, author_avatar, longitude, latitude, address, created_at
+    FROM artworks
+    WHERE id = $1
+  `;
 
-  if (res.rowCount === 0) {
+  const { rows } = await db.query(query, [id]);
+
+  if (rows.length === 0) {
     return undefined;
   }
 
-  const { rows } = res;
-  const row = rows[0];
-  const artwork: Artwork = {
-    name: row.name,
-    image: row.image,
-    image_width: row.image_width,
-    image_height: row.image_height,
-    description: row.description,
-    token: row.token,
-    author: row.author,
-    author_avatar: row.author_avatar,
-    longitude: row.longitude,
-    latitude: row.latitude,
-    address: row.address,
-    created_at: row.created_at,
-  };
+  const {
+    name,
+    image,
+    image_width,
+    image_height,
+    description,
+    token,
+    author,
+    author_avatar,
+    longitude,
+    latitude,
+    address,
+    created_at,
+  } = rows[0];
 
-  return artwork;
+  return {
+    name,
+    image,
+    image_width,
+    image_height,
+    description,
+    token,
+    author,
+    author_avatar,
+    longitude,
+    latitude,
+    address,
+    created_at,
+  };
 }
 
-export async function updateArtwork(artwork: Artwork) {
+export async function updateArtwork(artwork: Partial<Artwork>) {
   const db = await getDb();
 
   if (!artwork.id) {
     throw new Error("Artwork id is required");
   }
 
+  const keys = Object.keys(artwork) as (keyof Artwork)[];
+  const setClause = keys
+    .filter((key) => key !== "id")
+    .map((key, index) => `${key} = $${index + 1}`)
+    .join(", ");
 
-  const res = await db.query(
-    `UPDATE artworks 
-    SET name = $1, image = $2, image_width = $3, image_height = $4, description = $5, token = $6, author = $7, author_avatar = $8, longitude = $9, latitude = $10, address = $11
-    WHERE id = $12
-  `,
-    [
-      artwork.name,
-      artwork.image,
-      artwork.image_width,
-      artwork.image_height,
-      artwork.description,
-      artwork.token,
-      artwork.author,
-      artwork.author_avatar,
-      artwork.longitude,
-      artwork.latitude,
-      artwork.address,
-      artwork.id,
-    ]
-  );
+  const values = keys
+    .filter((key) => key !== "id")
+    .map((key) => artwork[key]);
 
+  const query = `
+    UPDATE artworks
+    SET ${setClause}
+    WHERE id = $${values.length + 1}
+  `;
+
+  values.push(artwork.id);
+
+  const res = await db.query(query, values);
   return res;
 }
 
-export async function deleteArtwork(id: number) {
+export async function deleteArtwork(id: number): Promise<void> {
   const db = await getDb();
-  const res = await db.query(`DELETE FROM artworks WHERE id = $1`, [id]);
+  const query = `
+    DELETE FROM artworks
+    WHERE id = $1
+  `;
 
-  return res;
+  try {
+    await db.query(query, [id]);
+  } catch (error) {
+    console.error('Error deleting artwork:', error);
+    throw error;
+  }
 }

@@ -11,34 +11,13 @@ import {
   Marker,
   AdvancedMarker,
   Pin,
+  InfoWindow,
 } from "@vis.gl/react-google-maps";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const containerStyle = {
-  width: "400px",
-  height: "400px",
-};
-
-const center = {
-  lat: -3.745,
-  lng: -38.523,
-};
-const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
-console.log("apiKey", apiKey);
-console.log("apiKey", apiKey);
 function MyComponent() {
-  const [markerRef, marker] = useMarkerRef();
-  const [markerRef2] = useMarkerRef();
-
-  const [artworks, setArtworks] = useState([]);
-
-  const hello = async () => {
-    const uri = "/api/hello";
-
-    const resp = await fetch(uri, {
-      method: "GET",
-    });
-  };
+  const [artworksGrouped, setArtworksGrouped] = useState({} as any);
+  const [currentArtwork, setCurrentArtwork] = useState({} as any);
 
   const getArtworks = async () => {
     const uri = "/api/artworks-all";
@@ -48,11 +27,29 @@ function MyComponent() {
     });
 
     const data = await resp.json();
-    setArtworks(data);
+
+    setArtworksGrouped(groupByLocation(data));
+    setCurrentArtwork(data[0]);
   };
 
+  function groupByLocation(data: any) {
+    const groups: any = {};
+  
+    data.forEach((item: any) => {
+      const { longitude, latitude } = item;
+      const key = `${longitude},${latitude}`;
+  
+      if (!groups[key]) {
+        groups[key] = [];
+      }
+  
+      groups[key].push(item);
+    });
+  
+    return groups
+  }
+
   useEffect(() => {
-    hello();
     getArtworks();
   }, []);
 
@@ -66,22 +63,32 @@ function MyComponent() {
         disableDefaultUI={true}
         mapId={"b1b1b1b1b1b1b1b1"}
       >
-        {/* <Marker ref={markerRef} position={{lat: 53.54992, lng: 10.00678}} /> */}
-        <AdvancedMarker position={{ lat: 53.54992, lng: 10.00678 }}>
-          <Pin
-            background={"#FBBC04"}
-            glyphColor={"#000"}
-            borderColor={"#000"}
-          />
-        </AdvancedMarker>
+        {Object.keys(artworksGrouped).map((key) => {
+          const artworks = artworksGrouped[key];
+          const [longitude, latitude] = key.split(",").map(parseFloat);
 
-        <AdvancedMarker
-          // className={customMarker}
-          position={{ lat: 53.54992, lng: 10.00678 }}
-        >
-          <h2>I am so customized</h2>
-          <p>That is pretty awesome!</p>
-        </AdvancedMarker>
+          return (
+            <AdvancedMarker
+              key={key}
+              position={{ lat: latitude, lng: longitude }}
+            >
+              {artworks && artworks.map((artwork: any) => {
+                return (
+                  <>
+                    <div className="flex flex-col bg-white" onClick={() => {
+                      setCurrentArtwork(artwork);
+                      console.log("artwork", currentArtwork);
+                    }}>
+                      <div className="text-sm font-semibold	mb-2 mt-1">
+                        {artwork.name}
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
+            </AdvancedMarker>
+          );
+        })}
       </Map>
       <div className="absolute z-10 bottom-10 w-full">
         <div className="bg-white mx-2.5 flex px-4 py-2 justify-between border-2 border-black">
@@ -94,23 +101,25 @@ function MyComponent() {
                 />
                 ={" "}
               </Avatar>
-              Yayoi Kusama
+              {currentArtwork.author}
             </div>
             <div className="text-sm font-semibold	mb-2 mt-1">
-              Infinite net [FKQS](2016)
+              {currentArtwork.name}
             </div>
             <div className="flex items-center text-sm font-medium">
               <NavIcon className="mr-2"/> Today Art Museum
             </div>
-            <div className="text-[8px] pl-6 mb-2">Grass Road, Tianzhu Town, Shunyi District, Beijing</div>
-            <div className="pl-6">
+            <div className="text-[8px] pl-6 mb-2">{currentArtwork.address}</div>
+            <a className="pl-6 block" href="https://www.google.com/maps/search/?api=1&query=39,116">
             <Button className="text-[10px] flex bg-black text-white">Navigate<ArrIcon className="ml-2"/></Button>
-            </div>
+            </a>
           </div>
           <div className="w-32 h-32 bg-[#F7F7F7] flex-shrink-0"></div>
         </div>
         <div className="px-2.5">
-          <Button className="w-full my-4 flex h-12 bg-black text-lg text-white py-2 border-2 border-purple-600">
+          <Button className="w-full my-4 flex h-12 bg-black text-lg text-white py-2 border-2 border-purple-600" onClick={() => {
+            rout
+          }}>
             <ScanIcon/> Scan to Hunt 
           </Button>
         </div>
