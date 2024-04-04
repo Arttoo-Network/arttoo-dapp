@@ -17,6 +17,7 @@ export async function claimArtwork(claim: ClaimRequest): Promise<QueryResult<any
 
   // 获取当前艺术藏品信息
   const artworkData = await db.query(`SELECT * FROM artworks WHERE id = $1`, [artwork_id]);
+  console.log('sss', artwork_id)
   const { token: rewards } = artworkData.rows[0];
 
   // 获取当前艺术藏品的领取者数量和排名

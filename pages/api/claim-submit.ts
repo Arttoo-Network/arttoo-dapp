@@ -8,6 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     wallet_type,
     artwork_id
   };
+  console.log('dd', claim)
   const ret = await submitClaim(claim);
 
   res.status(200).json(ret);

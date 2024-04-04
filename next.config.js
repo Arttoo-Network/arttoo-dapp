@@ -8,6 +8,7 @@ const nextConfig = {
 	exclude: ['node_modules'],
 	images: {
 		minimumCacheTTL: 60 * 10,
+		domains: ['via.placeholder.com'],
 		deviceSizes: [660, 900, 1200, 1600, 1800]
 	},
 	experimental: {
