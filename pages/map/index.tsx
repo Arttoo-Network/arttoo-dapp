@@ -58,7 +58,7 @@ function MyComponent() {
       <Map
         style={{ width: "100vw", height: "100vh" }}
         defaultCenter={{ lat: 22.54992, lng: 0 }}
-        defaultZoom={3}
+        defaultZoom={4}
         gestureHandling={"greedy"}
         disableDefaultUI={true}
         mapId={"b1b1b1b1b1b1b1b1"}
@@ -166,7 +166,7 @@ function NavIcon(
 function ArrIcon (props) {
   return (
     <svg {...props} width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M14.8203 0H0.820312V6.375H9.40661L5.89005 2.88125L6.77865 2L11.8203 7L6.77865 12L5.89005 11.1188L9.40661 7.625H0.820312V14H14.8203V0Z" fill="white" fill-opacity="0.9"/>
+    <path fillRule="evenodd" clipRule="evenodd" d="M14.8203 0H0.820312V6.375H9.40661L5.89005 2.88125L6.77865 2L11.8203 7L6.77865 12L5.89005 11.1188L9.40661 7.625H0.820312V14H14.8203V0Z" fill="white" fillOpacity="0.9"/>
     </svg>
   )
 }

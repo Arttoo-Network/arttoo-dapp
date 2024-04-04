@@ -7,5 +7,15 @@ Content-Type: application/json
 {
   "wallet_address": "walle",
   "wallet_type": "metamask",
-  "artwork_id": 1
+  "artwork_id": 46
+}
+
+
+### submit claim
+GET {{baseUri}}/reward-get
+Content-Type: application/json
+
+{
+  "artworkId": 4,
+  "walletAddress": "0x4541F235bDe36CDb4cBa009Bdf1451614D1c5777"
 }
