@@ -4,8 +4,41 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import { Button } from "@/components/ui/button"
+import { useEffect, useState } from "react"
+import { useActiveAccount, useActiveWallet } from "thirdweb/react";
+import { WalletClaimArtworkWithDetails } from "types/artwork";
+import Image from "next/image";
 
 export default function Component() {
+  const [list, setList] = useState<WalletClaimArtworkWithDetails[]>([]);
+  const totalRewards = list.reduce((sum, artwork) => {
+    return sum + artwork.rewards;
+}, 0)
+
+  const activeAccount = useActiveAccount();
+  useEffect(() => {
+    const getArtwork = async () => {
+      const walletAddress = activeAccount?.address;
+      if (!walletAddress) {
+        return;
+      }
+
+      const uri = `/api/reward-list`;
+
+      const resp = await fetch(uri, {
+        method: "POST",
+        headers: {
+          "Content-Type":" application/json"
+        },
+        body: JSON.stringify({ walletAddress }),
+      });
+
+      const data = await resp.json();
+      setList(data);
+    };
+   
+    getArtwork();
+  }, [activeAccount]);
   return (
     <div className="bg-white">
       <div className="mx-2.5 my-2 p-4 rounded-2xl bg-gradient-to-b	 from-[#A5F4E1] shadow" >
@@ -14,27 +47,29 @@ export default function Component() {
         <div className="flex items-center justify-between mt-4 mb-4">
           <div className="flex items-center space-x-2">
             <WalletIcon className="h-6 w-6" />
-            <div>ox2846...f9g9sn</div>
+            <div>{activeAccount?.address}</div>
           </div>
-          <div className="text-lg font-bold">1200 Token</div>
+          <div className="text-lg font-bold">{totalRewards} Token</div>
         </div>
-        <div className="text-5xl font-sans font-square flex justify-center bg-gradient-to-r text-gradient from-[#2AE5FF] to-[#F471FF] text-transparent bg-clip-text">
+        {/* <div className="text-5xl font-sans font-square flex justify-center bg-gradient-to-r text-gradient from-[#2AE5FF] to-[#F471FF] text-transparent bg-clip-text">
             <span className="mr-2 ">1,200</span>
             <span>$ART</span>
-          </div>
+          </div> */}
       </div>
       <div className="mx-2.5 mt-5 mb-2 flex justify-between">
         <div className="text-xl font-bold flex items-center">kick-backs <MenuIcon className="ml-2"/></div>
         <Button className="text-sm bg-black text-white">Claim in full</Button>
       </div>
       <div className="mx-4 my-2 grid gap-2">
-        <div className="flex items-start justify-between p-3 rounded-lg bg-white shadow-md">
+      { list.map((item) => {
+        return (
+          <div key={item.id} className="flex items-start justify-between p-3 rounded-lg bg-white shadow-md">
           <div className="flex items-center ">
-          <img
-            alt="Yayoi Kusama artwork"
+          <Image
+            alt={item.artwork_name}
             className="h-20 w-20"
             height="80"
-            src="https://placehold.co/70x70"
+            src={item.artwork_image}
             style={{
               aspectRatio: "80/80",
               objectFit: "cover",
@@ -42,12 +77,14 @@ export default function Component() {
             width="80"
           />
           <div className="pl-3">
-            <div className=" text-base font-bold">Yayoi Kusama</div>
-            <div className="text-sm">Infinity net [FKQS](2016)</div>
+            <div className=" text-base font-bold">{item.artwork_author}</div>
+            <div className="text-sm">{item.artwork_name}</div>
           </div>
           </div>
-          <div className="text-lg font-bold">+300</div>
+          <div className="text-lg font-bold">+{item.rewards}</div>
         </div>
+        )
+      })}
       </div>
     </div>
   )

@@ -38,3 +38,20 @@ export interface RewardRequest {
   walletAddress: string; // 钱包地址
   artworkId: number; // 艺术藏品 ID
 }
+
+export interface WalletClaimArtworkWithDetails {
+  id: number,
+  user_id?: number,
+  artwork_id: number,
+  artwork_name: string,
+  wallet_address: string,
+  rewards: number,
+  artwork_image: string,
+  artwork_token: number,
+  artwork_author: string,
+  image_width: number,
+  image_height: number,
+  longitude: number,
+  latitude: numbere,
+  description: string
+}

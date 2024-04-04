@@ -1,4 +1,4 @@
-import { findWalletClaimByAddressAndArtworkId, countArtworkClaims } from '../models/wallet_claim_artworks';
+import { findWalletClaimByAddressAndArtworkId, countArtworkClaims, getArtworksForAddress } from '../models/wallet_claim_artworks';
 import { RewardRequest } from '../types/artwork';
 
 export async function getReward(rewardRequest: RewardRequest) {
@@ -16,5 +16,18 @@ export async function getReward(rewardRequest: RewardRequest) {
   
   } catch (e) {
     console.log('get reward failed: ', e);
+  }
+}
+
+export async function getArtworks(walletAddress: string) {
+  try {
+    const res = await  getArtworksForAddress(walletAddress)
+      if (res) {
+        return res
+      }
+      return []
+  
+  } catch (e) {
+    console.log('get artwork list fail: ', e);
   }
 }
