@@ -85,6 +85,9 @@ export default function Component() {
         </div>
         )
       })}
+      {
+        !list.length && <div className="flex justify-center py-20">No rewards</div>
+      }
       </div>
     </div>
   )
