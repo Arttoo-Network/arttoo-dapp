@@ -32,15 +32,22 @@
 // export default Test;
 
 
-import { Scanner } from '@yudiel/react-qr-scanner';
+// import { Scanner } from '@yudiel/react-qr-scanner';
+
+import dynamic from 'next/dynamic';
+
+const DynamicScanner: any = dynamic(() => import('@yudiel/react-qr-scanner').then((mod: any) => mod.Scanner), {
+  ssr: false,
+});
 
 const App = () => {
     return (
-        <Scanner
-            onResult={(text, result) => console.log(text, result)}
-            onError={(error) => console.log(error?.message)}
+        <DynamicScanner
+            onResult={(text: any, result: any) => console.log(text, result)}
+            onError={(error: any) => console.log(error?.message)}
         />
     );
 }
 
 export default App;
+

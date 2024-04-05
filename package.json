@@ -20,7 +20,7 @@
 		"@web3-onboard/frame": "^2.0.2",
 		"@web3-onboard/injected-wallets": "^2.10.12",
 		"@web3-onboard/walletconnect": "^2.5.4",
-		"@yudiel/react-qr-scanner": "^2.0.0-beta.3",
+		"@yudiel/react-qr-scanner": "^2.0.0-beta.2",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",
 		"ethers": "^6.11.1",
