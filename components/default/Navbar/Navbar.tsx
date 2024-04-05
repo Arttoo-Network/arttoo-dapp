@@ -36,7 +36,7 @@ const Navbar = () => {
   ]
   const activeAccount = useActiveAccount();
 
-  const connectButton = {
+  const connectButton : any = {
     label: (
       <span className="flex items-center text-xs">
         <LogInIcon className="w-5 h-5" /> Log in
@@ -155,7 +155,7 @@ function LogInIcon(props: any) {
   );
 }
 
-function MenuIcon(props) {
+function MenuIcon(props: any) {
   return (
     <svg
       {...props}

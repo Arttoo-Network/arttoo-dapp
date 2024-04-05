@@ -4,6 +4,6 @@ import { saveArtwork, fetchArtworkById, editArtwork } from "services/artwork";
  
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const id = req.query.id;
-  const artwork = await fetchArtworkById(id);
+  const artwork = await fetchArtworkById(parseInt(id as string));
   res.status(200).json(artwork);
 }

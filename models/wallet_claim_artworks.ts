@@ -18,7 +18,7 @@ export async function findWalletClaimByAddressAndArtworkId(params: {
   `;
 
   try {
-    const { rows } = await db.query(query, [walletAddress, artworkId]);
+    const { rows } = await db.query(query, [walletAddress, artworkId] as any);
     console.log(rows);
     if (rows?.length === 0) {
       return undefined;

@@ -9,7 +9,7 @@ export async function claimArtwork(claim: ClaimRequest): Promise<QueryResult<any
   // 检查是否已经领取过该艺术藏品
   const existingClaim = await db.query(
     `SELECT * FROM wallet_claim_artworks WHERE wallet_address = $1 AND artwork_id = $2`,
-    [wallet_address, artwork_id]
+    [wallet_address, artwork_id] as any
   );
   if (existingClaim.rowCount) {
     throw new Error("You have already claimed this artwork");

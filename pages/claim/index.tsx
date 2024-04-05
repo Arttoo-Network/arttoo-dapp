@@ -285,7 +285,7 @@ function InfoIcon(props: any) {
   );
 }
 
-function CloseIcon(props) {
+function CloseIcon(props: any) {
   return (
     <svg
       {...props}
@@ -318,7 +318,7 @@ function CloseIcon(props) {
   );
 }
 
-function SuccessIcon(props) {
+function SuccessIcon(props: any) {
   return (
     <svg
       {...props}
@@ -396,7 +396,7 @@ function LoadingIcon() {
   );
 }
 
-function ErrorIcon(props) {
+function ErrorIcon(props: any) {
   return (
     <svg
       {...props}

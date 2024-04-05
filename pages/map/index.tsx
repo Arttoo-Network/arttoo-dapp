@@ -14,8 +14,11 @@ import {
   InfoWindow,
 } from "@vis.gl/react-google-maps";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
 
 function MyComponent() {
+  const router = useRouter();
+
   const [artworksGrouped, setArtworksGrouped] = useState({} as any);
   const [currentArtwork, setCurrentArtwork] = useState({} as any);
 
@@ -103,7 +106,9 @@ function MyComponent() {
               </Avatar>
               {currentArtwork.author}
             </div>
-            <div className="text-sm font-semibold	mb-2 mt-1">
+            <div className="text-sm font-semibold	mb-2 mt-1" onClick={() => {
+              router.push(`/claim`);
+            }}>
               {currentArtwork.name}
             </div>
             <div className="flex items-center text-sm font-medium">
@@ -117,9 +122,7 @@ function MyComponent() {
           <div className="w-32 h-32 bg-[#F7F7F7] flex-shrink-0"></div>
         </div>
         <div className="px-2.5">
-          <Button className="w-full my-4 flex h-12 bg-black text-lg text-white py-2 border-2 border-purple-600" onClick={() => {
-            rout
-          }}>
+          <Button className="w-full my-4 flex h-12 bg-black text-lg text-white py-2 border-2 border-purple-600">
             <ScanIcon/> Scan to Hunt 
           </Button>
         </div>
@@ -163,7 +166,7 @@ function NavIcon(
     </svg>
   );
 }
-function ArrIcon (props) {
+function ArrIcon (props: any) {
   return (
     <svg {...props} width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path fillRule="evenodd" clipRule="evenodd" d="M14.8203 0H0.820312V6.375H9.40661L5.89005 2.88125L6.77865 2L11.8203 7L6.77865 12L5.89005 11.1188L9.40661 7.625H0.820312V14H14.8203V0Z" fill="white" fillOpacity="0.9"/>
@@ -171,7 +174,7 @@ function ArrIcon (props) {
   )
 }
 
-function ScanIcon (props) {
+function ScanIcon (props: any) {
   return (
     <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clipPath="url(#clip0_446_135)">

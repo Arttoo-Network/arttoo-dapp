@@ -14,7 +14,7 @@ export async function insertArtwork(artwork: Artwork): Promise<QueryResult<any>>
     ) RETURNING id
   `;
 
-  const values = [
+  const values: any = [
     artwork.name,
     artwork.image,
     artwork.image_width,
@@ -114,7 +114,7 @@ export async function updateArtwork(artwork: Partial<Artwork>) {
     .map((key, index) => `${key} = $${index + 1}`)
     .join(", ");
 
-  const values = keys
+  const values: any = keys
     .filter((key) => key !== "id")
     .map((key) => artwork[key]);
 
