@@ -106,9 +106,7 @@ function MyComponent() {
               </Avatar>
               {currentArtwork.author}
             </div>
-            <div className="text-sm font-semibold	mb-2 mt-1" onClick={() => {
-              router.push(`/claim`);
-            }}>
+            <div className="text-sm font-semibold	mb-2 mt-1">
               {currentArtwork.name}
             </div>
             <div className="flex items-center text-sm font-medium">
