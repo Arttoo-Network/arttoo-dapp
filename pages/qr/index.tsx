@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-// import { QrReader } from 'react-qr-reader';
+import { QrReader } from 'react-qr-reader';
 
 const Test = (props:any) => {
   const [data, setData] = useState('No result');
 
   return (
     <>
-      {/* <QrReader
+      <QrReader
         onResult={(result: any, error) => {
           if (!!result) {
+            console.info(result);
             setData(result?.text);
           }
 
@@ -17,7 +18,7 @@ const Test = (props:any) => {
           }
         }}
         constraints={{}}
-      /> */}
+      />
       <p>{data}</p>
     </>
   );

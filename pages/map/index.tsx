@@ -122,7 +122,9 @@ function MyComponent() {
           <div className="w-32 h-32 bg-[#F7F7F7] flex-shrink-0"></div>
         </div>
         <div className="px-2.5">
-          <Button className="w-full my-4 flex h-12 bg-black text-lg text-white py-2 border-2 border-purple-600">
+          <Button className="w-full my-4 flex h-12 bg-black text-lg text-white py-2 border-2 border-purple-600" onClick={() => {
+              router.push(`/qr`);
+          }}>
             <ScanIcon/> Scan to Hunt 
           </Button>
         </div>
