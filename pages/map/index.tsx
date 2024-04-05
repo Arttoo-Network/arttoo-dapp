@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { memo, use, useEffect, useState } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { Button } from "@/components/ui/button"
 
@@ -10,6 +10,7 @@ import {
   useMarkerRef,
   Marker,
   AdvancedMarker,
+  useAdvancedMarkerRef,
   Pin,
   InfoWindow,
 } from "@vis.gl/react-google-maps";
@@ -20,7 +21,12 @@ function MyComponent() {
   const router = useRouter();
 
   const [artworksGrouped, setArtworksGrouped] = useState({} as any);
-  const [currentArtwork, setCurrentArtwork] = useState({} as any);
+  const [currentArtwork, setCurrentArtwork] = useState(null as any);
+  const initPosition = { lat: 39.916668, lng: 116.383331 };
+
+  const [markerRef, seMarker] = useAdvancedMarkerRef();
+  
+
 
   const getArtworks = async () => {
     const uri = "/api/artworks-all";
@@ -58,41 +64,8 @@ function MyComponent() {
 
   return (
     <>
-      <Map
-        style={{ width: "100vw", height: "100vh" }}
-        defaultCenter={{ lat: 22.54992, lng: 0 }}
-        defaultZoom={4}
-        gestureHandling={"greedy"}
-        disableDefaultUI={true}
-        mapId={"b1b1b1b1b1b1b1b1"}
-      >
-        {Object.keys(artworksGrouped).map((key) => {
-          const artworks = artworksGrouped[key];
-          const [longitude, latitude] = key.split(",").map(parseFloat);
+      <GoogleMapMemo artworksGrouped={artworksGrouped} setCurrentArtwork={setCurrentArtwork} initPosition={initPosition} />
 
-          return (
-            <AdvancedMarker
-              key={key}
-              position={{ lat: latitude, lng: longitude }}
-            >
-              {artworks && artworks.map((artwork: any) => {
-                return (
-                  <>
-                    <div className="flex flex-col bg-white" onClick={() => {
-                      setCurrentArtwork(artwork);
-                      console.log("artwork", currentArtwork);
-                    }}>
-                      <div className="text-sm font-semibold	mb-2 mt-1">
-                        {artwork.name}
-                      </div>
-                    </div>
-                  </>
-                );
-              })}
-            </AdvancedMarker>
-          );
-        })}
-      </Map>
       <div className="absolute z-10 bottom-10 w-full">
         <div className="bg-white mx-2.5 flex px-4 py-2 justify-between border-2 border-black">
           <div className="pr-6">
@@ -104,15 +77,15 @@ function MyComponent() {
                 />
                 ={" "}
               </Avatar>
-              {currentArtwork.author}
+              {currentArtwork && currentArtwork.author}
             </div>
             <div className="text-sm font-semibold	mb-2 mt-1">
-              {currentArtwork.name}
+              {currentArtwork && currentArtwork.name}
             </div>
             <div className="flex items-center text-sm font-medium">
               <NavIcon className="mr-2"/> Today Art Museum
             </div>
-            <div className="text-[8px] pl-6 mb-2">{currentArtwork.address}</div>
+            <div className="text-[8px] pl-6 mb-2">{currentArtwork && currentArtwork.address}</div>
             <a className="pl-6 block" href="https://www.google.com/maps/search/?api=1&query=39,116">
             <Button className="text-[10px] flex bg-black text-white">Navigate<ArrIcon className="ml-2"/></Button>
             </a>
@@ -132,6 +105,65 @@ function MyComponent() {
 }
 
 export default React.memo(MyComponent);
+
+const GoogleMapMemo = memo(function GoogleMapMemo({ artworksGrouped, setCurrentArtwork, initPosition }: any) {
+  return (
+    <Map
+        style={{ width: "100vw", height: "100vh" }}
+        defaultCenter={initPosition}
+        defaultZoom={6}
+        gestureHandling={"greedy"}
+        disableDefaultUI={true}
+        mapId={"b1b1b1b1b1b1b1b1"}
+      >
+
+        {Object.keys(artworksGrouped).map((key) => {
+          const artworks = artworksGrouped[key];
+          const [longitude, latitude] = key.split(",").map(parseFloat);
+
+            return <MarkerItem key={key} longitude={longitude} latitude={latitude}  artworks={artworks} switchCurrent={setCurrentArtwork} />
+
+        })}
+      </Map>
+  )
+});
+
+function MarkerItem ({longitude, latitude, artworks, switchCurrent}: any) {
+  const [markerRef, seMarker] = useAdvancedMarkerRef();
+
+  const [infowindowShown, setInfowindowShown] = useState(false);
+
+  const toggleInfoWindow = () =>
+    setInfowindowShown(previousState => !previousState);
+
+  const closeInfoWindow = () => setInfowindowShown(false);
+
+  return (
+    <>
+      <AdvancedMarker
+        ref={markerRef}
+        position={{lat: latitude, lng: longitude}}
+        onClick={toggleInfoWindow}
+      />
+
+      {infowindowShown && (
+        <InfoWindow anchor={seMarker} onCloseClick={closeInfoWindow}>
+          {artworks && artworks.map((artwork: any) => {
+            return (
+                <div key={artwork.id} className="flex flex-col bg-white" onClick={() => {
+                  switchCurrent(artwork);
+                }}>
+                  <div className="text-sm font-semibold	mb-2 mt-1">
+                    {artwork.name}
+                  </div>
+                </div>
+            );
+          })}
+        </InfoWindow>
+      )}
+    </>
+  )
+}
 
 function NavIcon(
   props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
