@@ -111,7 +111,7 @@ export default React.memo(MyComponent);
 const GoogleMapMemo = memo(function GoogleMapMemo({ artworksGrouped, setCurrentArtwork, initPosition }: any) {
   return (
     <Map
-        style={{ width: "100vw", height: "100vh" }}
+        style={{ width: "100vw", height: "calc(100vh - 48px)" }}
         defaultCenter={initPosition}
         defaultZoom={8}
         gestureHandling={"greedy"}
