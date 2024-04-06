@@ -5,7 +5,7 @@ POST {{baseUri}}/artwork-create
 Content-Type: application/json
 
 {
-"name": "Artwork 3333",
+"name": "Saudade has no translation",
 "image": "https://via.placeholder.com/150",
 "image_width": 150,
 "image_height": 150,

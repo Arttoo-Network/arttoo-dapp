@@ -141,7 +141,8 @@ export default function Component() {
                 <Image
                   alt="Infinite net [FKQS](2016)"
                   height="290"
-                  src={artInfo.image}
+                  // src={artInfo.image}
+                  src={'https://d51b8cb0b9c5610c8ac61ebdd04e2e69.r2.cloudflarestorage.com/arttoo/Tkk7h1durosAVH9CcszyuYs53xJ4h1hghGBXEgUV_Ok.webp'}
                   width="223"
                 />
               ) : (
