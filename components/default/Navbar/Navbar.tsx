@@ -8,9 +8,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const wallets = [
-  createWallet("io.metamask"),
-  createWallet("com.coinbase.wallet"),
-  createWallet("me.rainbow"),
+  createWallet("com.okex.wallet"),
+  createWallet("app.phantom"),
 ];
 
 console.log(
@@ -83,6 +82,7 @@ const Navbar = () => {
             theme={"light"}
             client={client}
             wallets={wallets}
+            recommendedWallets={wallets}
             connectButton={connectButton}
             detailsButton={detailsButton}
             connectModal={{
