@@ -8,9 +8,9 @@ export async function insertArtwork(artwork: Artwork): Promise<QueryResult<any>>
 
   const query = `
     INSERT INTO artworks (
-      name, image, image_width, image_height, description, token, author, author_avatar, longitude, latitude, address, created_at
+      name, image, image_width, image_height, description, token, author, author_avatar, longitude, latitude, address, location, created_at
     ) VALUES (
-      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13
     ) RETURNING id
   `;
 
@@ -26,6 +26,7 @@ export async function insertArtwork(artwork: Artwork): Promise<QueryResult<any>>
     artwork.longitude,
     artwork.latitude,
     artwork.address,
+    artwork.location,
     createdAt,
   ];
 
@@ -42,7 +43,7 @@ export async function getArtworks(): Promise<Artwork[]> {
   const db = await getDb();
 
   const query = `
-    SELECT id, name, image, image_width, image_height, description, token, author, author_avatar, longitude, latitude, address, created_at
+    SELECT id, name, image, image_width, image_height, description, token, author, author_avatar, longitude, latitude, address, location, created_at
     FROM artworks
     ORDER BY created_at DESC
   `;
@@ -82,6 +83,7 @@ export async function findArtworkById(id: number): Promise<Artwork | undefined> 
     longitude,
     latitude,
     address,
+    location,
     created_at,
   } = rows[0];
 
@@ -97,6 +99,7 @@ export async function findArtworkById(id: number): Promise<Artwork | undefined> 
     longitude,
     latitude,
     address,
+    location,
     created_at,
   };
 }

@@ -47,7 +47,7 @@ export default function Component() {
         <div className="flex items-center justify-between mt-4 mb-4">
           <div className="flex items-center space-x-2">
             <WalletIcon className="h-6 w-6" />
-            <div>{activeAccount?.address}</div>
+            <div>{activeAccount?.address ? `${activeAccount?.address?.slice(0, 5)}...${activeAccount?.address?.slice(-4)}` : ''}</div>
           </div>
           <div className="text-lg font-bold">{totalRewards} Token</div>
         </div>

@@ -1,112 +1,22 @@
 @baseUri=http://127.0.0.1:3000/api 
 
-const fakeData = [
-    
-    
-    {
-      "name": "Artwork 3",
-      "image_width": 150,
-      "image_height": 150,
-      "description": "A beautiful sculpture",
-      "token": 2,
-      "author": "Sarah Thompson",
-      "longitude": 40.7128,
-      "latitude": -74.0059,
-      "address": "Metropolitan Museum of Art, New York, NY"
-    },
-    {
-      "name": "Artwork 4",
-      "image_width": 150,
-      "image_height": 150,
-      "description": "A modern digital artwork",
-      "token": 2,
-      "author": "David Kim",
-      "longitude": 37.7749,
-      "latitude": -122.4194,
-      "address": "456 Market St, San Francisco, CA"
-    },
-    {
-      "name": "Artwork 5",
-      "image_width": 150,
-      "image_height": 150,
-      "description": "A charming watercolor painting",
-      "token": 2,
-      "author": "Emily Davis",
-      "longitude": 48.8566,
-      "latitude": 2.3522,
-      "address": "Louvre Museum, Paris, France"
-    },
-    {
-      "name": "Artwork 6",
-      "image_width": 150,
-      "image_height": 150,
-      "description": "A captivating portrait",
-      "token": 2,
-      "author": "Michael Brown",
-      "longitude": 51.5072,
-      "latitude": -0.1275,
-      "address": "National Portrait Gallery, London, UK"
-    },
-    {
-      "name": "Artwork 7",
-      "image_width": 150,
-      "image_height": 150,
-      "description": "A thought-provoking installation",
-      "token": 2,
-      "author": "Sarah Wilson",
-      "longitude": 34.0522,
-      "latitude": -118.2437,
-      "address": "The Broad Museum, Los Angeles, CA"
-    },
-    {
-      "name": "Artwork 8",
-      "image_width": 150,
-      "image_height": 150,
-      "description": "A mesmerizing sculpture",
-      "token": 2,
-      "author": "David Chen",
-      "longitude": 37.7749,
-      "latitude": -122.4194,
-      "address": "789 Market St, San Francisco, CA"
-    },
-    {
-      "name": "Artwork 9",
-      "image_width": 150,
-      "image_height": 150,
-      "description": "A whimsical mixed media artwork",
-      "token": 2,
-      "author": "Emily Rodriguez",
-      "longitude": 41.8781,
-      "latitude": -87.6298,
-      "address": "Art Institute of Chicago, Chicago, IL"
-    },
-    {
-      "name": "Artwork 10",
-      "image_width": 150,
-      "image_height": 150,
-      "description": "A striking contemporary painting",
-      "token": 2,
-      "author": "Michael Garcia",
-      "longitude": 51.5072,
-      "latitude": -0.1275,
-      "address": "Tate Modern, London, UK"
-    }
-  ]
-
 ### insert artwork
 POST {{baseUri}}/artwork-create
 Content-Type: application/json
 
 {
 "name": "Artwork 3333",
+"image": "https://via.placeholder.com/150",
 "image_width": 150,
 "image_height": 150,
 "description": "A beautiful sculpture",
 "token": 2,
 "author": "Sarah Thompson",
+"author_avatar": "https://via.placeholder.com/150",
 "longitude": 40.7128,
 "latitude": -74.0059,
-"address": "Metropolitan Museum of Art, New York, NY"
+"address": "Metropolitan Museum of Art, New York, NY",
+"location": "New York, NY"
 }
 
 ### get all artworks

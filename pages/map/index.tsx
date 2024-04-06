@@ -15,18 +15,21 @@ import {
   InfoWindow,
 } from "@vis.gl/react-google-maps";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+
 
 function MyComponent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const lat = searchParams.get("lat");
+  const lng = searchParams.get("lng");
 
   const [artworksGrouped, setArtworksGrouped] = useState({} as any);
   const [currentArtwork, setCurrentArtwork] = useState(null as any);
-  const initPosition = { lat: 39.916668, lng: 116.383331 };
 
   const [markerRef, seMarker] = useAdvancedMarkerRef();
-  
-
+  const initPosition = lat && lng ? { lat: parseFloat(lat), lng: parseFloat(lng) } : { lat: 39.916668, lng: 116.383331 };
 
   const getArtworks = async () => {
     const uri = "/api/artworks-all";
@@ -75,7 +78,6 @@ function MyComponent() {
                   alt="Yayoi Kusama"
                   src="https://placehold.co/28x28"
                 />
-                ={" "}
               </Avatar>
               {currentArtwork && currentArtwork.author}
             </div>
@@ -83,7 +85,7 @@ function MyComponent() {
               {currentArtwork && currentArtwork.name}
             </div>
             <div className="flex items-center text-sm font-medium">
-              <NavIcon className="mr-2"/> Today Art Museum
+              <NavIcon className="mr-2"/> {currentArtwork && currentArtwork.location}
             </div>
             <div className="text-[8px] pl-6 mb-2">{currentArtwork && currentArtwork.address}</div>
             <a className="pl-6 block" href="https://www.google.com/maps/search/?api=1&query=39,116">
@@ -114,7 +116,7 @@ const GoogleMapMemo = memo(function GoogleMapMemo({ artworksGrouped, setCurrentA
         defaultZoom={6}
         gestureHandling={"greedy"}
         disableDefaultUI={true}
-        mapId={"b1b1b1b1b1b1b1b1"}
+        mapId={"arttoo-google-map"}
       >
 
         {Object.keys(artworksGrouped).map((key) => {
@@ -138,6 +140,8 @@ function MarkerItem ({longitude, latitude, artworks, switchCurrent}: any) {
 
   const closeInfoWindow = () => setInfowindowShown(false);
 
+  const location = artworks[0]?.location || "Location";
+
   return (
     <>
       <AdvancedMarker
@@ -147,14 +151,15 @@ function MarkerItem ({longitude, latitude, artworks, switchCurrent}: any) {
       />
 
       {infowindowShown && (
-        <InfoWindow anchor={seMarker} onCloseClick={closeInfoWindow}>
+        <InfoWindow anchor={seMarker} onCloseClick={closeInfoWindow} >
+          <h1>{location}</h1>
           {artworks && artworks.map((artwork: any) => {
             return (
                 <div key={artwork.id} className="flex flex-col bg-white" onClick={() => {
                   switchCurrent(artwork);
                 }}>
-                  <div className="text-sm font-semibold	mb-2 mt-1">
-                    {artwork.name}
+                  <div className="text-s font-medium	mb-2 mt-1 bg-slate-100 rounded-sm p-2">
+                    {artwork.name} 
                   </div>
                 </div>
             );

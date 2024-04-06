@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS artworks (
     longitude FLOAT,
     latitude FLOAT,
     address VARCHAR(255),
+    location VARCHAR(255),
     created_at timestamptz
 );
 
