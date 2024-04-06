@@ -2,7 +2,8 @@
 
 import React, { memo, use, useEffect, useState } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 import {
   APIProvider,
@@ -17,7 +18,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter, useSearchParams } from "next/navigation";
 
-
 function MyComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -29,7 +29,10 @@ function MyComponent() {
   const [currentArtwork, setCurrentArtwork] = useState(null as any);
 
   const [markerRef, seMarker] = useAdvancedMarkerRef();
-  const initPosition = lat && lng ? { lat: parseFloat(lat), lng: parseFloat(lng) } : { lat: 51.53030424679481, lng: -0.07532395581990654 };
+  const initPosition =
+    lat && lng
+      ? { lat: parseFloat(lat), lng: parseFloat(lng) }
+      : { lat: 51.53030424679481, lng: -0.07532395581990654 };
 
   const getArtworks = async () => {
     const uri = "/api/artworks-all";
@@ -46,19 +49,19 @@ function MyComponent() {
 
   function groupByLocation(data: any) {
     const groups: any = {};
-  
+
     data.forEach((item: any) => {
       const { longitude, latitude } = item;
       const key = `${longitude},${latitude}`;
-  
+
       if (!groups[key]) {
         groups[key] = [];
       }
-  
+
       groups[key].push(item);
     });
-  
-    return groups
+
+    return groups;
   }
 
   useEffect(() => {
@@ -67,16 +70,20 @@ function MyComponent() {
 
   return (
     <>
-      <GoogleMapMemo artworksGrouped={artworksGrouped} setCurrentArtwork={setCurrentArtwork} initPosition={initPosition} />
+      <GoogleMapMemo
+        artworksGrouped={artworksGrouped}
+        setCurrentArtwork={setCurrentArtwork}
+        initPosition={initPosition}
+      />
 
       <div className="absolute z-10 bottom-10 w-full">
-        <div className="bg-white mx-2.5 flex px-4 py-2 justify-between border-2 border-black">
+       {currentArtwork &&  <div className="bg-white mx-2.5 flex px-4 py-2 justify-between border-2 border-black">
           <div className="pr-6">
             <div className="flex text-xs items-center">
               <Avatar className="w-7 h-7 rounded-full overflow-hidden mr-2">
                 <AvatarImage
-                  alt="Yayoi Kusama"
-                  src="https://placehold.co/28x28"
+                  alt={currentArtwork?.author}
+                  src={currentArtwork?.author_avatar}
                 />
               </Avatar>
               {currentArtwork && currentArtwork.author}
@@ -85,20 +92,39 @@ function MyComponent() {
               {currentArtwork && currentArtwork.name}
             </div>
             <div className="flex items-center text-sm font-medium">
-              <NavIcon className="mr-2"/> {currentArtwork && currentArtwork.location}
+              <NavIcon className="mr-2" />{" "}
+              {currentArtwork && currentArtwork.location}
             </div>
-            <div className="text-[8px] pl-6 mb-2">{currentArtwork && currentArtwork.address}</div>
-            <a className="pl-6 block" href="https://www.google.com/maps/search/?api=1&query=39,116">
-            <Button className="text-[10px] flex bg-black text-white">Navigate<ArrIcon className="ml-2"/></Button>
+            <div className="text-[8px] pl-6 mb-2">
+              {currentArtwork && currentArtwork.address}
+            </div>
+            <a
+              className="pl-6 block"
+              href={`https://www.google.com/maps/search/?api=1&query=${currentArtwork?.latitude},${currentArtwork?.longitude}`}
+            >
+              <Button className="text-[10px] flex bg-black text-white">
+                Navigate
+                <ArrIcon className="ml-2" />
+              </Button>
             </a>
           </div>
-          <div className="w-32 h-32 bg-[#F7F7F7] flex-shrink-0"></div>
-        </div>
+          <div className="w-30 h-40 bg-[#F7F7F7] flex-shrink-0 flex justify-center items-center">
+            <Image
+              alt={currentArtwork.image}
+              src={currentArtwork.image}
+              height={150}
+              width={100}
+            />
+          </div>
+        </div>}
         <div className="px-2.5">
-          <Button className="w-full my-4 flex h-12 bg-black text-lg text-white py-2 border-2 border-purple-600" onClick={() => {
+          <Button
+            className="w-full my-4 flex h-12 bg-black text-lg text-white py-2 border-2 border-purple-600"
+            onClick={() => {
               router.push(`/qr`);
-          }}>
-            <ScanIcon/> Scan to Hunt 
+            }}
+          >
+            <ScanIcon /> Scan to Hunt
           </Button>
         </div>
       </div>
@@ -108,35 +134,45 @@ function MyComponent() {
 
 export default React.memo(MyComponent);
 
-const GoogleMapMemo = memo(function GoogleMapMemo({ artworksGrouped, setCurrentArtwork, initPosition }: any) {
+const GoogleMapMemo = memo(function GoogleMapMemo({
+  artworksGrouped,
+  setCurrentArtwork,
+  initPosition,
+}: any) {
   return (
     <Map
-        style={{ width: "100vw", height: "calc(100vh - 48px)" }}
-        defaultCenter={initPosition}
-        defaultZoom={8}
-        gestureHandling={"greedy"}
-        disableDefaultUI={true}
-        mapId={"arttoo-google-map"}
-      >
+      style={{ width: "100vw", height: "calc(100vh - 48px)" }}
+      defaultCenter={initPosition}
+      defaultZoom={8}
+      gestureHandling={"greedy"}
+      disableDefaultUI={true}
+      mapId={"arttoo-google-map"}
+    >
+      {Object.keys(artworksGrouped).map((key) => {
+        const artworks = artworksGrouped[key];
+        const [longitude, latitude] = key.split(",").map(parseFloat);
 
-        {Object.keys(artworksGrouped).map((key) => {
-          const artworks = artworksGrouped[key];
-          const [longitude, latitude] = key.split(",").map(parseFloat);
-
-            return <MarkerItem key={key} longitude={longitude} latitude={latitude}  artworks={artworks} switchCurrent={setCurrentArtwork} />
-
-        })}
-      </Map>
-  )
+        return (
+          <MarkerItem
+            key={key}
+            longitude={longitude}
+            latitude={latitude}
+            artworks={artworks}
+            switchCurrent={setCurrentArtwork}
+          />
+        );
+      })}
+    </Map>
+  );
 });
 
-function MarkerItem ({longitude, latitude, artworks, switchCurrent}: any) {
+function MarkerItem({ longitude, latitude, artworks, switchCurrent }: any) {
   const [markerRef, seMarker] = useAdvancedMarkerRef();
 
   const [infowindowShown, setInfowindowShown] = useState(false);
 
   const toggleInfoWindow = () =>
-    setInfowindowShown(previousState => !previousState);
+    setInfowindowShown((previousState) => !previousState);
 
   const closeInfoWindow = () => setInfowindowShown(false);
 
@@ -146,28 +182,33 @@ function MarkerItem ({longitude, latitude, artworks, switchCurrent}: any) {
     <>
       <AdvancedMarker
         ref={markerRef}
-        position={{lat: latitude, lng: longitude}}
+        position={{ lat: latitude, lng: longitude }}
         onClick={toggleInfoWindow}
       />
 
       {infowindowShown && (
-        <InfoWindow anchor={seMarker} onCloseClick={closeInfoWindow} >
+        <InfoWindow anchor={seMarker} onCloseClick={closeInfoWindow}>
           <h1>{location}</h1>
-          {artworks && artworks.map((artwork: any) => {
-            return (
-                <div key={artwork.id} className="flex flex-col bg-white" onClick={() => {
-                  switchCurrent(artwork);
-                }}>
+          {artworks &&
+            artworks.map((artwork: any) => {
+              return (
+                <div
+                  key={artwork.id}
+                  className="flex flex-col bg-white"
+                  onClick={() => {
+                    switchCurrent(artwork);
+                  }}
+                >
                   <div className="text-s font-medium	mb-2 mt-1 bg-slate-100 rounded-sm p-2">
-                    {artwork.name} 
+                    {artwork.name}
                   </div>
                 </div>
-            );
-          })}
+              );
+            })}
         </InfoWindow>
       )}
     </>
-  )
+  );
 }
 
 function NavIcon(
@@ -203,26 +244,52 @@ function NavIcon(
     </svg>
   );
 }
-function ArrIcon (props: any) {
+function ArrIcon(props: any) {
   return (
-    <svg {...props} width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path fillRule="evenodd" clipRule="evenodd" d="M14.8203 0H0.820312V6.375H9.40661L5.89005 2.88125L6.77865 2L11.8203 7L6.77865 12L5.89005 11.1188L9.40661 7.625H0.820312V14H14.8203V0Z" fill="white" fillOpacity="0.9"/>
+    <svg
+      {...props}
+      width="15"
+      height="14"
+      viewBox="0 0 15 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M14.8203 0H0.820312V6.375H9.40661L5.89005 2.88125L6.77865 2L11.8203 7L6.77865 12L5.89005 11.1188L9.40661 7.625H0.820312V14H14.8203V0Z"
+        fill="white"
+        fillOpacity="0.9"
+      />
     </svg>
-  )
+  );
 }
 
-function ScanIcon (props: any) {
+function ScanIcon(props: any) {
   return (
-    <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clipPath="url(#clip0_446_135)">
-<path d="M11.7753 8.04205V11.5646H8.25278V8.04205H11.7753ZM13.5366 6.28078H6.49152V13.3258H13.5366V6.28078ZM11.7753 17.4354V20.958H8.25278V17.4354H11.7753ZM13.5366 15.6742H6.49152V22.7192H13.5366V15.6742ZM21.1687 8.04205V11.5646H17.6462V8.04205H21.1687ZM22.93 6.28078H15.8849V13.3258H22.93V6.28078ZM15.8849 15.6742H17.6462V17.4354H15.8849V15.6742ZM17.6462 17.4354H19.4074V19.1967H17.6462V17.4354ZM19.4074 15.6742H21.1687V17.4354H19.4074V15.6742ZM15.8849 19.1967H17.6462V20.958H15.8849V19.1967ZM17.6462 20.958H19.4074V22.7192H17.6462V20.958ZM19.4074 19.1967H21.1687V20.958H19.4074V19.1967ZM21.1687 17.4354H22.93V19.1967H21.1687V17.4354ZM21.1687 20.958H22.93V22.7192H21.1687V20.958ZM25.2783 8.62913C24.6325 8.62913 24.1041 8.10075 24.1041 7.45496V5.10661H21.7558C21.11 5.10661 20.5816 4.57823 20.5816 3.93244C20.5816 3.28664 21.11 2.75826 21.7558 2.75826H25.2783C25.9241 2.75826 26.4525 3.28664 26.4525 3.93244V7.45496C26.4525 8.10075 25.9241 8.62913 25.2783 8.62913ZM26.4525 25.0676V21.545C26.4525 20.8993 25.9241 20.3709 25.2783 20.3709C24.6325 20.3709 24.1041 20.8993 24.1041 21.545V23.8934H21.7558C21.11 23.8934 20.5816 24.4218 20.5816 25.0676C20.5816 25.7134 21.11 26.2417 21.7558 26.2417H25.2783C25.9241 26.2417 26.4525 25.7134 26.4525 25.0676ZM4.14317 26.2417H7.66569C8.31149 26.2417 8.83986 25.7134 8.83986 25.0676C8.83986 24.4218 8.31149 23.8934 7.66569 23.8934H5.31734V21.545C5.31734 20.8993 4.78896 20.3709 4.14317 20.3709C3.49737 20.3709 2.96899 20.8993 2.96899 21.545V25.0676C2.96899 25.7134 3.49737 26.2417 4.14317 26.2417ZM2.96899 3.93244V7.45496C2.96899 8.10075 3.49737 8.62913 4.14317 8.62913C4.78896 8.62913 5.31734 8.10075 5.31734 7.45496V5.10661H7.66569C8.31149 5.10661 8.83986 4.57823 8.83986 3.93244C8.83986 3.28664 8.31149 2.75826 7.66569 2.75826H4.14317C3.49737 2.75826 2.96899 3.28664 2.96899 3.93244Z" fill="#FFFAFA"/>
-</g>
-<defs>
-<clipPath id="clip0_446_135">
-<rect width="28.1802" height="28.1802" fill="white" transform="translate(0.620605 0.409912)"/>
-</clipPath>
-</defs>
-</svg>
-
-  )
+    <svg
+      width="29"
+      height="29"
+      viewBox="0 0 29 29"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clipPath="url(#clip0_446_135)">
+        <path
+          d="M11.7753 8.04205V11.5646H8.25278V8.04205H11.7753ZM13.5366 6.28078H6.49152V13.3258H13.5366V6.28078ZM11.7753 17.4354V20.958H8.25278V17.4354H11.7753ZM13.5366 15.6742H6.49152V22.7192H13.5366V15.6742ZM21.1687 8.04205V11.5646H17.6462V8.04205H21.1687ZM22.93 6.28078H15.8849V13.3258H22.93V6.28078ZM15.8849 15.6742H17.6462V17.4354H15.8849V15.6742ZM17.6462 17.4354H19.4074V19.1967H17.6462V17.4354ZM19.4074 15.6742H21.1687V17.4354H19.4074V15.6742ZM15.8849 19.1967H17.6462V20.958H15.8849V19.1967ZM17.6462 20.958H19.4074V22.7192H17.6462V20.958ZM19.4074 19.1967H21.1687V20.958H19.4074V19.1967ZM21.1687 17.4354H22.93V19.1967H21.1687V17.4354ZM21.1687 20.958H22.93V22.7192H21.1687V20.958ZM25.2783 8.62913C24.6325 8.62913 24.1041 8.10075 24.1041 7.45496V5.10661H21.7558C21.11 5.10661 20.5816 4.57823 20.5816 3.93244C20.5816 3.28664 21.11 2.75826 21.7558 2.75826H25.2783C25.9241 2.75826 26.4525 3.28664 26.4525 3.93244V7.45496C26.4525 8.10075 25.9241 8.62913 25.2783 8.62913ZM26.4525 25.0676V21.545C26.4525 20.8993 25.9241 20.3709 25.2783 20.3709C24.6325 20.3709 24.1041 20.8993 24.1041 21.545V23.8934H21.7558C21.11 23.8934 20.5816 24.4218 20.5816 25.0676C20.5816 25.7134 21.11 26.2417 21.7558 26.2417H25.2783C25.9241 26.2417 26.4525 25.7134 26.4525 25.0676ZM4.14317 26.2417H7.66569C8.31149 26.2417 8.83986 25.7134 8.83986 25.0676C8.83986 24.4218 8.31149 23.8934 7.66569 23.8934H5.31734V21.545C5.31734 20.8993 4.78896 20.3709 4.14317 20.3709C3.49737 20.3709 2.96899 20.8993 2.96899 21.545V25.0676C2.96899 25.7134 3.49737 26.2417 4.14317 26.2417ZM2.96899 3.93244V7.45496C2.96899 8.10075 3.49737 8.62913 4.14317 8.62913C4.78896 8.62913 5.31734 8.10075 5.31734 7.45496V5.10661H7.66569C8.31149 5.10661 8.83986 4.57823 8.83986 3.93244C8.83986 3.28664 8.31149 2.75826 7.66569 2.75826H4.14317C3.49737 2.75826 2.96899 3.28664 2.96899 3.93244Z"
+          fill="#FFFAFA"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_446_135">
+          <rect
+            width="28.1802"
+            height="28.1802"
+            fill="white"
+            transform="translate(0.620605 0.409912)"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+  );
 }
