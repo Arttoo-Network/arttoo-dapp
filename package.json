@@ -17,6 +17,7 @@
 		"@solana/spl-token": "^0.4.3",
 		"@solana/web3.js": "^1.91.4",
 		"@thirdweb-dev/react": "^4.4.28",
+		"@vercel/analytics": "^1.2.2",
 		"@vercel/postgres": "^0.7.2",
 		"@vis.gl/react-google-maps": "^0.8.2",
 		"@web3-onboard/core": "^2.21.3",
