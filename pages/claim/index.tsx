@@ -86,8 +86,11 @@ export default function Component() {
       const data = await resp.json();
       setArtInfo(data);
 
-      const shareUrl = encodeURIComponent(`https://arttoo.io:3000/map?lng=${data.longitude}&lat=${data.latitude}`)
-      const text = `I’ve discovered ${data.name} at ${shareUrl} , come view this artwork and claim @arttoonetwork‘s $HUNT token`
+      const shareUrl = encodeURIComponent(`https://arttoo.xyz/map?lng=${data.longitude}&lat=${data.latitude}`)
+      const text = `
+      I’ve discovered ${data.name} by ${data.author} at ${shareUrl}
+      come view this artwork and claim @arttoonetwork‘s $HUNT token 🎨✨
+      `
       setTwitterShareText(text);
     };
    
@@ -132,18 +135,24 @@ export default function Component() {
             <AvatarImage alt={artInfo.author} src={artInfo.author_avatar} />
             <AvatarFallback>YK</AvatarFallback>
           </Avatar>
-          <h2 className="text-lg font-semibold">{artInfo.author}</h2>
+          <h2 className="text-lg font-semibold">
+            <a href="https://twitter.com/paranoidhill">
+              {artInfo.author}
+            </a>
+          </h2>
         </section>
         <section className="mb-2 rounded-lg	bg-background-second py-4">
           <div className="text-center mt-2">
             <div className="flex pb-4 justify-center">
               {artInfo.image ? (
-                <Image
-                  alt="Infinite net [FKQS](2016)"
-                  height="290"
-                  src={artInfo.image}
-                  width="223"
-                />
+                <a href={'https://exchange.art/single/2UpJkw26MpymW7SxVFg6stjJEaSKiTbDDHncmAt6VUsv'}>
+                  <Image
+                    alt="Infinite net [FKQS](2016)"
+                    height="290"
+                    src={artInfo.image}
+                    width="223"
+                  />
+                </a>
               ) : (
                 <div className="min-h-60"></div>
               )}
@@ -171,7 +180,7 @@ export default function Component() {
                     height={32}
                     src="/assets/token.png" alt={"ART"} />
                 </div>
-                <span className="font-bold">ARTOO</span>
+                <span className="font-bold">ARTTOO HUNT</span>
               </div>
               <span className="text-lg font-bold">+{artInfo.token}</span>
             </div>
@@ -196,7 +205,7 @@ export default function Component() {
                     height={32}
                     src="/assets/token.png" alt={"ART"} />
                 </div>
-                <span className="font-bold">ARTOO</span>
+                <span className="font-bold">ARTTOO HUNT</span>
               </div>
               <span className="text-lg font-bold">+{artInfo.token}</span>
             </div>
@@ -210,7 +219,7 @@ export default function Component() {
                   <div className="pb-2">Total visit</div>
                   <div>{rewards.count}</div>
                 </div>
-                <div className="pt-4">+{rewards.rewards - artInfo.token} ART</div>
+                <div className="pt-4">+{rewards.rewards - artInfo.token} HUNT</div>
               </div>
             </div>
             <section>

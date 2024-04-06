@@ -12,3 +12,8 @@ Content-Type: application/json
 ### get users
 GET {{baseUri}}/users-get
 Content-Type: application/json
+
+
+### transfer
+GET {{baseUri}}/transfer
+Content-Type: application/json

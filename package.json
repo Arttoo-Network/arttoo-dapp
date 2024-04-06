@@ -14,6 +14,8 @@
 		"@radix-ui/react-slot": "^1.0.2",
 		"@radix-ui/react-toast": "^1.1.5",
 		"@react-google-maps/api": "^2.19.3",
+		"@solana/spl-token": "^0.4.3",
+		"@solana/web3.js": "^1.91.4",
 		"@thirdweb-dev/react": "^4.4.28",
 		"@vercel/postgres": "^0.7.2",
 		"@vis.gl/react-google-maps": "^0.8.2",

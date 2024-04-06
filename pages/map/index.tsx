@@ -44,7 +44,9 @@ function MyComponent() {
     const data = await resp.json();
 
     setArtworksGrouped(groupByLocation(data));
-    setCurrentArtwork(data[0]);
+
+    const defaultArtwork = data.find((artwork: any) => artwork.id === 47);
+    setCurrentArtwork(defaultArtwork);
   };
 
   function groupByLocation(data: any) {
@@ -74,9 +76,10 @@ function MyComponent() {
         artworksGrouped={artworksGrouped}
         setCurrentArtwork={setCurrentArtwork}
         initPosition={initPosition}
+        currentArtwork={currentArtwork}
       />
 
-      <div className="absolute z-10 bottom-10 w-full">
+      <div className="fixed z-10 bottom-10 w-full">
        {currentArtwork &&  <div className="bg-white mx-2.5 flex px-4 py-2 justify-between border-2 border-black">
           <div className="pr-6">
             <div className="flex text-xs items-center">
@@ -110,7 +113,7 @@ function MyComponent() {
           </div>
           <div className="w-30 h-40 bg-[#F7F7F7] flex-shrink-0 flex justify-center items-center">
             <Image
-              alt={currentArtwork.image}
+              alt={'Artwork Image'}
               src={currentArtwork.image}
               height={150}
               width={100}
@@ -138,12 +141,13 @@ const GoogleMapMemo = memo(function GoogleMapMemo({
   artworksGrouped,
   setCurrentArtwork,
   initPosition,
+  currentArtwork
 }: any) {
   return (
     <Map
-      style={{ width: "100vw", height: "calc(100vh - 48px)" }}
+      style={{ width: "100vw", height: "calc(100vh - 50px)" }}
       defaultCenter={initPosition}
-      defaultZoom={8}
+      defaultZoom={16}
       gestureHandling={"greedy"}
       disableDefaultUI={true}
       mapId={"arttoo-google-map"}
@@ -159,6 +163,7 @@ const GoogleMapMemo = memo(function GoogleMapMemo({
             latitude={latitude}
             artworks={artworks}
             switchCurrent={setCurrentArtwork}
+            currentArtwork={currentArtwork}
           />
         );
       })}
@@ -166,10 +171,10 @@ const GoogleMapMemo = memo(function GoogleMapMemo({
   );
 });
 
-function MarkerItem({ longitude, latitude, artworks, switchCurrent }: any) {
+function MarkerItem({ longitude, latitude, artworks, switchCurrent, currentArtwork }: any) {
   const [markerRef, seMarker] = useAdvancedMarkerRef();
 
-  const [infowindowShown, setInfowindowShown] = useState(false);
+  const [infowindowShown, setInfowindowShown] = useState(true);
 
   const toggleInfoWindow = () =>
     setInfowindowShown((previousState) => !previousState);
@@ -194,12 +199,16 @@ function MarkerItem({ longitude, latitude, artworks, switchCurrent }: any) {
               return (
                 <div
                   key={artwork.id}
-                  className="flex flex-col bg-white"
+                  className={"flex flex-col bg-white"}
                   onClick={() => {
                     switchCurrent(artwork);
                   }}
                 >
-                  <div className="text-s font-medium	mb-2 mt-1 bg-slate-100 rounded-sm p-2">
+                  <div className={
+                    currentArtwork.id !== artwork.id 
+                    ? "text-s font-medium	mb-2 mt-1 bg-slate-100 rounded-sm p-2"
+                    : "text-s font-medium	mb-2 mt-1 bg-black rounded-sm p-2 text-white"
+                  }>
                     {artwork.name}
                   </div>
                 </div>

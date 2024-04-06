@@ -63,26 +63,30 @@ export default function Component() {
       <div className="mx-4 my-2 grid gap-2">
       { list.map((item) => {
         return (
-          <div key={item.id} className="flex items-start justify-between p-3 rounded-lg bg-white shadow-md">
-          <div className="flex items-center ">
-          <Image
-            alt={item.artwork_name}
-            className="h-20 w-20"
-            height="80"
-            src={item.artwork_image}
-            style={{
-              aspectRatio: "80/80",
-              objectFit: "cover",
-            }}
-            width="80"
-          />
-          <div className="pl-3">
-            <div className=" text-base font-bold">{item.artwork_author}</div>
-            <div className="text-sm">{item.artwork_name}</div>
-          </div>
-          </div>
-          <div className="text-lg font-bold">+{item.rewards}</div>
-        </div>
+          <a 
+            key={item.id}
+            className="flex items-start justify-between p-3 rounded-lg bg-white shadow-md"
+            href={`/claim?id=${item.artwork_id}`}
+          >
+            <div className="flex items-center ">
+            <Image
+              alt={item.artwork_name}
+              className="h-20 w-20"
+              height="80"
+              src={item.artwork_image}
+              style={{
+                aspectRatio: "80/80",
+                objectFit: "cover",
+              }}
+              width="80"
+            />
+            <div className="pl-3">
+              <div className=" text-base font-bold">{item.artwork_author}</div>
+              <div className="text-sm">{item.artwork_name}</div>
+            </div>
+            </div>
+            <div className="text-lg font-bold">+{item.rewards - item.artwork_token}</div>
+          </a>
         )
       })}
       {
