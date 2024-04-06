@@ -10,7 +10,8 @@ const nextConfig = {
 		minimumCacheTTL: 60 * 10,
 		domains: [
 			'via.placeholder.com',
-			'd51b8cb0b9c5610c8ac61ebdd04e2e69.r2.cloudflarestorage.com'
+			'arttoo.r2.cloudflarestorage.com',
+			'arttoo.s3.us-west-1.amazonaws.com'
 		],
 		deviceSizes: [660, 900, 1200, 1600, 1800]
 	},

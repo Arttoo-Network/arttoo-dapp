@@ -29,7 +29,7 @@ function MyComponent() {
   const [currentArtwork, setCurrentArtwork] = useState(null as any);
 
   const [markerRef, seMarker] = useAdvancedMarkerRef();
-  const initPosition = lat && lng ? { lat: parseFloat(lat), lng: parseFloat(lng) } : { lat: 39.916668, lng: 116.383331 };
+  const initPosition = lat && lng ? { lat: parseFloat(lat), lng: parseFloat(lng) } : { lat: 51.53030424679481, lng: -0.07532395581990654 };
 
   const getArtworks = async () => {
     const uri = "/api/artworks-all";
@@ -113,7 +113,7 @@ const GoogleMapMemo = memo(function GoogleMapMemo({ artworksGrouped, setCurrentA
     <Map
         style={{ width: "100vw", height: "100vh" }}
         defaultCenter={initPosition}
-        defaultZoom={6}
+        defaultZoom={8}
         gestureHandling={"greedy"}
         disableDefaultUI={true}
         mapId={"arttoo-google-map"}

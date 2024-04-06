@@ -5,18 +5,18 @@ POST {{baseUri}}/artwork-create
 Content-Type: application/json
 
 {
-"name": "Saudade has no translation",
-"image": "https://via.placeholder.com/150",
-"image_width": 150,
-"image_height": 150,
-"description": "A beautiful sculpture",
-"token": 2,
-"author": "Sarah Thompson",
-"author_avatar": "https://via.placeholder.com/150",
-"longitude": 40.7128,
-"latitude": -74.0059,
-"address": "Metropolitan Museum of Art, New York, NY",
-"location": "New York, NY"
+    "name": "Self-Portrait",
+    "image": "https://arttoo.s3.us-west-1.amazonaws.com/photo_2024-04-06+17.28.19.jpeg",
+    "image_width": 100,
+    "image_height": 160,
+    "description": "1/1 NFT from original oil painting\n\nOil paint, oil stick and charcoal on canvas\n\n09/2023 Barcelona, Spain\n\n100 x 160 cm (40‘ x 63’)",
+    "token": 1000,
+    "author": "Picasso",
+    "author_avatar": "https://via.placeholder.com/150",
+    "longitude": 51.53030424679481,
+    "latitude": -0.07532395581990654,
+    "address": "Exhibited digitally 01/2024 in Barcelona and 02/2024 at NFT Factory in Paris.",
+    "location": "Shoreditch Exchange"
 }
 
 ### get all artworks
