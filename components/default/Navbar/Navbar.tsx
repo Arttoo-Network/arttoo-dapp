@@ -42,7 +42,7 @@ const Navbar = () => {
         <LogInIcon className="w-5 h-5" /> Log in
       </span>
     ),
-    className: "p-0 ",
+    className: "p-0 content-btn",
     style: {
       backgroundColor: "#fff",
       padding: 0,
@@ -78,7 +78,7 @@ const Navbar = () => {
         <h1 className="text-xl font-bold">
           <Logo />
         </h1>
-        <div className="flex items-center">
+        <div id="connectButton" className="flex items-center">
           <ConnectButton
             theme={"light"}
             client={client}

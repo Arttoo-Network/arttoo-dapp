@@ -30,6 +30,11 @@ export default function Component() {
     claim()
   };
   const claim = async () => {
+    if (!wallet?.id) {
+      const ele = document.querySelector('#connectButton .content-btn') as HTMLButtonElement;
+      ele?.click()
+      return;
+    }
     setStatus(STATUS.LOADING);
     setLoading(true);
     try {
@@ -86,6 +91,7 @@ export default function Component() {
   const getReward = async () => {
     const id = searchParams.get("id");
     if (!id || !activeAccount?.address) {
+      setRewards(null)
       return;
     }
 
@@ -154,14 +160,19 @@ export default function Component() {
             </div>
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-2">
-                <div className="bg-gray-200 rounded-full w-8 h-8" />
+                <div className="bg-gray-200 rounded-full w-8 h-8" >
+                  <Image 
+                    width={32} // 可选，图片的宽度
+                    height={32}
+                    src="/assets/token.png" alt={"ART"} />
+                </div>
                 <span className="font-bold">ARTOO</span>
               </div>
               <span className="text-lg font-bold">+{artInfo.token}</span>
             </div>
             <Button
               onClick={handleClaim}
-              className="w-full translate-y-6 h-12 mt-4 bg-black text-white py-2 border-2 border-purple-600"
+              className="w-full  h-12 mt-4 bg-black text-white py-2 border-2 border-purple-600"
             >
               CLAIM
             </Button>
@@ -174,7 +185,12 @@ export default function Component() {
             </div>
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center space-x-2">
-                <div className="bg-gray-200 rounded-full w-8 h-8" />
+                <div className="bg-gray-200 rounded-full w-8 h-8" >
+                <Image 
+                    width={32} // 可选，图片的宽度
+                    height={32}
+                    src="/assets/token.png" alt={"ART"} />
+                </div>
                 <span className="font-bold">ARTOO</span>
               </div>
               <span className="text-lg font-bold">+{artInfo.token}</span>
