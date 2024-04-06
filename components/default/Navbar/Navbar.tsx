@@ -6,10 +6,13 @@ import { ConnectButton } from "thirdweb/react";
 import { createWallet } from "thirdweb/wallets";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { create } from "domain";
 
 const wallets = [
   createWallet("com.okex.wallet"),
   createWallet("app.phantom"),
+  createWallet("com.trustwallet.app"),
 ];
 
 console.log(
@@ -75,7 +78,7 @@ const Navbar = () => {
     <header className="bg-white sticky top-0 z-40 w-full px-4 py-1 shadow-md">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">
-          <Logo />
+          <Link href="/map"><Logo /></Link>
         </h1>
         <div id="connectButton" className="flex items-center">
           <ConnectButton
