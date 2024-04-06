@@ -39,6 +39,7 @@ export default function Component() {
     setLoading(true);
     try {
       const id = searchParams.get("id");
+
       if (!wallet?.id || !id) {
         return;
       }
@@ -67,7 +68,7 @@ export default function Component() {
 
   };
 
-  
+  const [twitterShareText, setTwitterShareText] = useState("");
   useEffect(() => {
     const getArtwork = async () => {
       const id = searchParams.get("id");
@@ -84,6 +85,10 @@ export default function Component() {
 
       const data = await resp.json();
       setArtInfo(data);
+
+      const shareUrl = encodeURIComponent(`https://arttoo.io:3000/map?lng=${data.longitude}&lat=${data.latitude}`)
+      const text = `I’ve discovered ${data.name} at ${shareUrl} , come view this artwork and claim @arttoonetwork‘s $HUNT token`
+      setTwitterShareText(text);
     };
    
     getArtwork();
@@ -218,7 +223,8 @@ export default function Component() {
             <section className="pb-5">
               <a
                 className="text-xs flex items-center border-b py-4"
-                href="https://twitter.com/intent/tweet?text=Hello%20world"
+                data-size="large"
+                href={`https://twitter.com/intent/tweet?text=${twitterShareText}`}
               >
                 <Image
                   className="mr-2"

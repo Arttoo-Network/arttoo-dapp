@@ -11,6 +11,7 @@ export interface Artwork {
   longitude: number; // 艺术藏品经度
   latitude: number; // 艺术藏品纬度
   address: string; // 艺术藏品地址
+  location: string; // 艺术藏品位置
   created_at?: string;
 }
 

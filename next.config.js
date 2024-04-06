@@ -8,7 +8,11 @@ const nextConfig = {
 	exclude: ['node_modules'],
 	images: {
 		minimumCacheTTL: 60 * 10,
-		domains: ['via.placeholder.com'],
+		domains: [
+			'via.placeholder.com',
+			'arttoo.r2.cloudflarestorage.com',
+			'arttoo.s3.us-west-1.amazonaws.com'
+		],
 		deviceSizes: [660, 900, 1200, 1600, 1800]
 	},
 	experimental: {

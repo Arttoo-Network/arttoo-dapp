@@ -33,7 +33,7 @@ export async function claimArtwork(claim: ClaimRequest): Promise<QueryResult<any
       const bonus = rewards * [0.1, 0.08, 0.06, 0.04, 0.02][index];
       visitor.rewards += bonus;
       db.query(`UPDATE wallet_claim_artworks SET rewards = $1 WHERE id = $2`, [
-        visitor.rewards,
+        parseFloat(visitor.rewards.toPrecision(12)),
         visitor.id,
       ]);
     });
