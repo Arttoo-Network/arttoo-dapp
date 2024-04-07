@@ -148,13 +148,13 @@ export default function Component() {
                 <a href={'https://exchange.art/single/2UpJkw26MpymW7SxVFg6stjJEaSKiTbDDHncmAt6VUsv'}>
                   <Image
                     alt="Infinite net [FKQS](2016)"
-                    height="290"
+                    height="320"
                     src={artInfo.image}
                     width="223"
                   />
                 </a>
               ) : (
-                <div className="min-h-60"></div>
+                <div className="min-h-80"></div>
               )}
             </div>
             <h3 className="text-sm font-semibold">{artInfo.name}</h3>
