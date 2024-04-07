@@ -12,18 +12,22 @@ export default async function handler(
 
   console.log("get-user-info", req);
 
+  if (!req.body.wallet_address || !req.body.wallet_type) {
+    return
+  }
+
   const user: User = {
-    wallet_address: req.body.wallet_address || "0x1234567890abcdef1234567890abcdef12345678",
-    wallet_type: req.body.wallet_type || "metamask"
+    wallet_address: req.body.wallet_address,
+    wallet_type: req.body.wallet_type,
+    claimed_tokens: 0,
   };
 
   try {
-
     await saveUser(user);
 
     res.status(200).json(user)
   } catch (e) {
-    console.log("get user info failed");
-    return respErr("get user info failed");
+    console.log("save user info failed");
+    return respErr("save user info failed");
   }
 }

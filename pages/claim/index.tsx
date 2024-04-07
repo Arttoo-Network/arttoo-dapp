@@ -248,11 +248,11 @@ export default function Component() {
                 <Image
                   className="mr-2"
                   src="/assets/ins.png"
-                  alt="Instargram"
+                  alt="Instagram"
                   width={20} // 可选，图片的宽度
                   height={20} // 可选，图片的高度
                 />
-                Share it on Instargram
+                Share it on Instagram
               </div>
             </section>
           </section>

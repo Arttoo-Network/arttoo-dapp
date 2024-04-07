@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { RewardRequest } from 'types/artwork';
-import { transfer } from 'models/transfer';
+import { submitTransfer } from 'models/transfer';
  
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const ret = await transfer();
+  const ret = await submitTransfer(req.body.toWallet, req.body.amount);
   return res.status(200).json(ret);
 }

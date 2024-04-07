@@ -74,6 +74,19 @@ const Navbar = () => {
       document.removeEventListener("click", closeMenu);
     };
   });
+
+  const saveUser = async (wallet_address: string, wallet_type: string) => {
+    const uri = `/api/user-create`;
+    const resp = await fetch(uri, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ wallet_address, wallet_type }),
+    });
+    const data = await resp.json();
+    return data;
+  }
   return (
     <header className="bg-white sticky top-0 z-40 w-full px-4 py-1 shadow-md">
       <div className="flex items-center justify-between">
@@ -93,12 +106,17 @@ const Navbar = () => {
               size: "compact",
             }}
             onConnect={(wallet) => {
-              console.log(
-                "Connected to wallet",
-                wallet,
-                wallet.getConfig(),
-                wallet.getAccount()
-              );
+              const accout = wallet.getAccount();
+              console.log("wallet", wallet, accout);
+
+              const id = wallet.id;
+              const wallet_address = accout?.address;
+
+              if (!wallet_address) {
+                return;
+              }
+
+              saveUser(wallet_address, id);
             }}
           />
 

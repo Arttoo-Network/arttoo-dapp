@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     wallet_address VARCHAR(255),
     wallet_type VARCHAR(255),
-    total_amount FLOAT,
+    claimed_tokens FLOAT,
     created_at timestamptz
 );
 
@@ -22,14 +22,6 @@ CREATE TABLE IF NOT EXISTS artworks (
     location VARCHAR(255),
     created_at timestamptz
 );
-
--- CREATE TABLE IF NOT EXISTS wallet_rewards (
---     id SERIAL PRIMARY KEY,
---     user_id INT,
---     wallet_address VARCHAR(255),
---     total_amount INT,
---     created_at timestamptz
--- );
 
 CREATE TABLE IF NOT EXISTS wallet_claim_artworks (
     id SERIAL PRIMARY KEY,
