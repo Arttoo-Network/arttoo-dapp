@@ -101,6 +101,7 @@ export const transfer = async (toWallet: string, amount: number) => {
 // 查 wallet_claim_artworks 表，看看当前地址是否有 claim 的记录，以及总的 rewards 数量
 export const checkWalletAccount = async (wallet_address: string) => {
   const db = await getDb();
+  console.log("wallet_address===>",wallet_address)
   const res = await db.query(`SELECT * FROM wallet_claim_artworks WHERE wallet_address = $1`, [
     wallet_address,
   ]);
@@ -108,12 +109,10 @@ export const checkWalletAccount = async (wallet_address: string) => {
     return undefined;
   }
   const { rows } = res;
+  console.log("wallet_claim_artworks===>",rows)
   
   // 把查询到的数据的所有 rewards 加起来
-  let rewards = 0;
-  rows.forEach((row) => {
-    rewards += row.rewards;
-  });
+  const total_rewards = rows.reduce((acc, row) => acc + row.rewards, 0);
 
   // 再去 users 表里查一下，claimed_tokens 字段
   const res2 = await db.query(`SELECT claimed_tokens FROM users WHERE wallet_address = $1`, [
@@ -125,7 +124,7 @@ export const checkWalletAccount = async (wallet_address: string) => {
   const { rows: rows2 } = res2;
 
   return {
-    rewards,
+    total_rewards,
     claimed_tokens: rows2[0].claimed_tokens
   };
 }
@@ -156,34 +155,36 @@ export const checkWalletAccount = async (wallet_address: string) => {
 //   await sendAndConfirmTransaction(connection, transaction, [fromWallet]);
 // }
 
-export const submitTransfer = async (toWallet: string, amount: number) => {
+export const submitTransfer = async (toWallet: string) => {
   const ret = await checkWalletAccount(toWallet);
   if (!ret) {
     return { code: 400, message: "Invalid wallet address" };
   }
 
-  const { rewards, claimed_tokens } = ret;
-  const unClaimedTokens = rewards - claimed_tokens;
-  if (unClaimedTokens < amount) {
+  const { total_rewards, claimed_tokens } = ret;
+  const unClaimedTokens = total_rewards - claimed_tokens;
+  if (unClaimedTokens <= 0) {
     return { code: 400, message: "Insufficient balance" };
   }
 
-  const transferRes = await transfer(toWallet, amount);
+  const transferRes = await transfer(toWallet, unClaimedTokens);
 
   if (transferRes) {
     const db = await getDb();
     const res = await db.query(`UPDATE users SET claimed_tokens = $1 WHERE wallet_address = $2`, [
-      claimed_tokens + amount,
+      total_rewards,
       toWallet
     ]);
-    
-    return {
-      code: 0,
-      message: "Transfer successful",
-      data: {
-        claimed_tokens: claimed_tokens + amount
-      }
-    };
+
+    if (res.rowCount === 1) {
+      return {
+        code: 0,
+        message: "Transfer successful",
+        data: {
+          claimed_tokens: total_rewards
+        }
+      };
+    }
   }
 
   return { code: 500, message: "Transfer failed" };

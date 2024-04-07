@@ -38,7 +38,53 @@ export default function Component() {
     };
 
     getArtwork();
+    getUserInfoByWallet();
   }, [activeAccount]);
+
+  const [claimedToken, setClaimedTokens] = useState(0);
+
+  const getUserInfoByWallet = async () => {
+    const wallet_address = activeAccount?.address;
+    if (!wallet_address) {
+      return;
+    }
+
+    const uri = `/api/user-get?wallet_address=${wallet_address}`;
+
+    const resp = await fetch(uri);
+
+    const userInfo = await resp.json();
+
+    if (userInfo) {
+      setClaimedTokens(userInfo.claimed_tokens);
+    }
+  }
+
+  const handleSubmitTransfer = async () => {
+    const wallet_address = activeAccount?.address;
+    if (!wallet_address) {
+      return;
+    }
+
+    const uri = `/api/transfer`;
+
+    const resp = await fetch(uri, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ wallet_address }),
+    });
+
+    const { code, data, message } = await resp.json();
+
+    if (code === 0) {
+      setClaimedTokens(data.claimed_tokens);
+    } else {
+      console.error(message);
+    }
+  }
+
   return (
     <div className="bg-white">
       <div className="mx-2.5 my-2 p-2 bg-gradient-to-b	 from-[#A5F4E1] shadow">
@@ -54,16 +100,21 @@ export default function Component() {
                 : ""}
             </div>
           </div>
-          <div className="text-xs font-medium">{totalRewards} claimed</div>
+          <div className="text-xs font-medium">{claimedToken} claimed</div>
         </div>
         <div className="flex flex-col items-center">
           <div className="text-xs font-medium	pt-4 pb-1">Total Reward</div>
           <div className="text-2xl font-semibold pb-4">{totalRewards} $HUNT</div>
-          <div className="text-xs font-medium	pb-4">2400 $HUNT unclaimed</div>
+          <div className="text-xs font-medium	pb-4">{totalRewards - claimedToken} $HUNT unclaimed</div>
         </div>
       </div>
       <div className="flex justify-center py-3">
-        <Button className="text-sm bg-black text-white">Claim All</Button>
+        <Button
+          className="text-sm bg-black text-white"
+          onClick={handleSubmitTransfer}
+        >
+          Claim All
+        </Button>
       </div>
       <div className="mx-2.5 mt-5 mb-2 flex justify-between">
         <div className="text-xl font-bold flex items-center">
