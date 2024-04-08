@@ -31,72 +31,67 @@ import { getDb } from "./db";
 // export const transfer = async (fromWallet: Keypair, toWallet: PublicKey, amount: number) => {}
 
 export const transfer = async (toWallet: string, amount: number) => {
-  try {
-    // Connect to cluster
-    // const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
-    // const connection = new Connection('https://api.devnet.solana.com');
-    const connection = new Connection('https://prettiest-special-arm.solana-devnet.quiknode.pro/900df112d8b1b76c89e2e33265c1b637907196f0/');
-    let secretKey = Uint8Array.from([213,250,198,250,57,113,231,219,112,203,145,138,170,144,202,186,72,149,38,158,81,86,179,46,232,182,225,140,164,121,121,115,114,56,244,34,140,178,16,202,233,117,242,145,50,191,207,71,167,171,168,136,216,211,150,226,197,231,25,160,150,220,4,37]);
-    const fromWallet = Keypair.fromSecretKey(secretKey);
-    // console.log("===>",fromWallet.publicKey)
-    const towallet = new PublicKey(toWallet)
+  // Connect to cluster
+   // const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+   const connection = new Connection('https://divine-newest-surf.solana-mainnet.quiknode.pro/06d9c2bd2e81a32582ddd475e0c06e4875d3b357/');
+//   const connection = new Connection('https://solana-mainnet.phantom.app/YBPpkkN4g91xDiAnTE9r0RcMkjg0sKUIWvAfoFVJ');
 
-    const mint = await getMint(connection, 
-      new PublicKey("8Y1kQ4Z4ryxDpZ647N3pcXFzn4brHqysiDQVEN6ybCi7"),
-      'single',
-      TOKEN_2022_PROGRAM_ID);
-    console.log("mint===> ok")
-    // const mint = 
+   let secretKey = Uint8Array.from([54,101,91,117,232,226,159,136,49,50,91,172,201,238,242,202,79,157,53,237,45,18,88,171,185,255,38,62,58,215,97,139,181,124,17,84,128,232,223,72,23,227,170,31,31,134,202,143,127,190,106,197,250,80,232,223,11,141,53,107,252,66,103,96]);
+   const fromWallet = Keypair.fromSecretKey(secretKey);
+   // console.log("===>",fromWallet.publicKey)
+   const towallet = new PublicKey("GMKswFLuqqdwQq44anLuetXVH8gEwi6DVVDES4JfqpYh")
 
-    const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
-        connection,
-        fromWallet,
-        mint.address,
-        fromWallet.publicKey,
-        false,
-        'single', 
-        undefined,
-        TOKEN_2022_PROGRAM_ID
-    );
-    
-    console.log("fromTokenAccount===> ok")
+   const mint = await getMint(connection, 
+     new PublicKey("49mn1PDLPkLyaFZW5aQiqtoM2xdfXpjJqfJJ4S2kwnbT"),
+     'single',
+     TOKEN_2022_PROGRAM_ID);
+   console.log("mint===> ok")
+   // const mint = 
 
-      
-    
-    //get the token account of the toWallet Solana address, if it does not exist, create it
-    const toTokenAccount = await getOrCreateAssociatedTokenAccount(
-        connection,
-        fromWallet,
-        mint.address,
-        towallet,
-        false,
-        'single', 
-        undefined,
-        TOKEN_2022_PROGRAM_ID
-    );
-    console.log("toTokenAccount===> ok")
-        
-    // Add token transfer instructions to transaction
-    const transaction = new Transaction().add(
-    createTransferInstruction(
-        fromTokenAccount.address,
-        toTokenAccount.address,
-        fromWallet.publicKey,
-        amount*1000000,
-        [],
-        TOKEN_2022_PROGRAM_ID
-    )
-    );
+   const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
+       connection,
+       fromWallet,
+       mint.address,
+       fromWallet.publicKey,
+       false,
+       'single', 
+       undefined,
+       TOKEN_2022_PROGRAM_ID
+   );
+   
+   console.log("fromTokenAccount===> ok")
 
-    // Sign transaction, broadcast, and confirm
-    let res = await sendAndConfirmTransaction(connection, transaction, [fromWallet]);
-    console.log("res===> ok!!>",res)
+     
+   
+   //get the token account of the toWallet Solana address, if it does not exist, create it
+   const toTokenAccount = await getOrCreateAssociatedTokenAccount(
+       connection,
+       fromWallet,
+       mint.address,
+       towallet,
+       false,
+       'single', 
+       undefined,
+       TOKEN_2022_PROGRAM_ID
+   );
+   console.log("toTokenAccount===> ok")
+       
+   // Add token transfer instructions to transaction
+   const transaction = new Transaction().add(
+   createTransferInstruction(
+       fromTokenAccount.address,
+       toTokenAccount.address,
+       fromWallet.publicKey,
+       100*1000000,
+       [],
+       TOKEN_2022_PROGRAM_ID
+   )
+   );
 
-    return res;
-  } catch (error) {
-    console.error("Error transferring tokens:", error);
-    throw error;
-  }
+   // Sign transaction, broadcast, and confirm
+   let res = await sendAndConfirmTransaction(connection, transaction, [fromWallet]);
+   console.log("res===> ok!!>",res)
+   return res
 }
 
 // 查 wallet_claim_artworks 表，看看当前地址是否有 claim 的记录，以及总的 rewards 数量
