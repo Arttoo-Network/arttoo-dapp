@@ -24,7 +24,7 @@ POST https://arttoo.xyz/api/transfer
 Content-Type: application/json
 
 {
-  "toWallet": "0x62a412068aBb2F85590EE8986c7F80eDFa1F4439",
+  "wallet_address": "0x62a412068aBb2F85590EE8986c7F80eDFa1F4439",
   "amount": 1
 }
 
@@ -34,6 +34,6 @@ POST https://arttoo.xyz/api/transfer-test
 Content-Type: application/json
 
 {
-  "toWallet": "0x62a412068aBb2F85590EE8986c7F80eDFa1F4439",
+  "wallet_address": "0x62a412068aBb2F85590EE8986c7F80eDFa1F4439",
   "amount": 1
 }
