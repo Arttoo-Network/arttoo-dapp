@@ -2,18 +2,32 @@
 import { useActiveAccount } from "thirdweb/react";
 import { Button } from "@/components/ui/button";
 
-import { ConnectButton } from "thirdweb/react";
-import { createWallet } from "thirdweb/wallets";
+import {
+  WalletDisconnectButton,
+  WalletMultiButton
+} from '@solana/wallet-adapter-react-ui';
+
+// import { ConnectButton } from "thirdweb/react";
+// import { createWallet } from "thirdweb/wallets";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { create } from "domain";
 
-const wallets = [
-  createWallet("com.okex.wallet"),
-  createWallet("app.phantom"),
-  createWallet("com.trustwallet.app"),
-];
+import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { Keypair, SystemProgram, Transaction } from '@solana/web3.js';
+
+
+
+// const wallets = [
+//   createWallet("com.okex.wallet"),
+//   createWallet("app.phantom"),
+//   createWallet("com.trustwallet.app"),
+// ];
+
+{/* <WalletMultiButton />
+                    <WalletDisconnectButton /> */}
 
 console.log(
   process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID,
@@ -25,6 +39,19 @@ const client = {
 };
 
 const Navbar = () => {
+  const { connection } = useConnection();
+  const { publicKey, sendTransaction } = useWallet();
+
+  useEffect(() => {
+    if (!publicKey) {
+      return;
+    }
+    const wallet_address = publicKey.toString();
+    console.log("wallet_address", wallet_address, publicKey.toBase58);
+
+    saveUser(wallet_address, "solana");
+  }, [publicKey]);
+
   const router = useRouter();
   const menuList = [
     {
@@ -94,7 +121,8 @@ const Navbar = () => {
           <Link href="/map"><Logo /></Link>
         </h1>
         <div id="connectButton" className="flex items-center">
-          <ConnectButton
+          <WalletMultiButton />
+          {/* <ConnectButton
             theme={"light"}
             client={client}
             wallets={wallets}
@@ -118,7 +146,7 @@ const Navbar = () => {
 
               saveUser(wallet_address, id);
             }}
-          />
+          /> */}
 
           <Button
             onClick={toggle}

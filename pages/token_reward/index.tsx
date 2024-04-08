@@ -8,8 +8,12 @@ import { useEffect, useState } from "react";
 import { useActiveAccount, useActiveWallet } from "thirdweb/react";
 import { WalletClaimArtworkWithDetails } from "types/artwork";
 import Image from "next/image";
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
 export default function Component() {
+  const { publicKey, sendTransaction, wallet } = useWallet();
+  const wallet_address = publicKey?.toString();
+
   const [list, setList] = useState<WalletClaimArtworkWithDetails[]>([]);
   const totalRewards = list.reduce((sum, artwork) => {
     return sum + artwork.rewards;
@@ -18,8 +22,7 @@ export default function Component() {
   const activeAccount = useActiveAccount();
   useEffect(() => {
     const getArtwork = async () => {
-      const walletAddress = activeAccount?.address;
-      if (!walletAddress) {
+      if (!wallet_address) {
         return;
       }
 
@@ -30,7 +33,7 @@ export default function Component() {
         headers: {
           "Content-Type": " application/json",
         },
-        body: JSON.stringify({ walletAddress }),
+        body: JSON.stringify({ walletAddress: wallet_address }),
       });
 
       const data = await resp.json();
@@ -44,7 +47,6 @@ export default function Component() {
   const [claimedToken, setClaimedTokens] = useState(0);
 
   const getUserInfoByWallet = async () => {
-    const wallet_address = activeAccount?.address;
     if (!wallet_address) {
       return;
     }
@@ -61,7 +63,6 @@ export default function Component() {
   }
 
   const handleSubmitTransfer = async () => {
-    const wallet_address = activeAccount?.address;
     if (!wallet_address) {
       return;
     }
@@ -82,6 +83,9 @@ export default function Component() {
       setClaimedTokens(data.claimed_tokens);
     } else {
       console.error(message);
+      setTimeout(() => {
+        alert('Network congestion, ' + message);
+      }, 3000);
     }
   }
 
@@ -92,11 +96,11 @@ export default function Component() {
           <div className="flex text-xs items-center space-x-2">
             <WalletIcon className="h-6 w-6" />
             <div>
-              {activeAccount?.address
-                ? `${activeAccount?.address?.slice(
+              {wallet_address
+                ? `${wallet_address?.slice(
                     0,
                     5
-                  )}...${activeAccount?.address?.slice(-4)}`
+                  )}...${wallet_address?.slice(-4)}`
                 : ""}
             </div>
           </div>

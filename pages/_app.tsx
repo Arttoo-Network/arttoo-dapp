@@ -7,6 +7,7 @@ import '../theme/globals.css';
 import { AppWithProvider } from '@contexts/ThirdWeb/ThirdwebProvider';
 import {APIProvider, Map} from '@vis.gl/react-google-maps';
 import { Analytics } from "@vercel/analytics/react"
+import { SolanaProvider } from '@contexts/Sol/SolanaProvider';
 
 const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''
 
@@ -31,18 +32,19 @@ const CreateNextjsDapp = ({ Component, pageProps }: AppProps) => {
 			</Head>
 
 			<ResponsiveProvider>
-				<AppWithProvider>
 					<div className='h-screen flex flex-col'>
 						<APIProvider apiKey={apiKey}>
+							<SolanaProvider>
 							<Navbar />
 							<div className='flex-1 relative'>
 								<Component {...pageProps} />
 							</div>
 							<Analytics />
+							</SolanaProvider>
+
 							{/* <footer className= "bg-black h-12 sticky bottom-0 z-40 w-full flex-none"></footer> */}
 						</APIProvider>
 					</div>
-				</AppWithProvider>
 			</ResponsiveProvider>
 		</>
 	);

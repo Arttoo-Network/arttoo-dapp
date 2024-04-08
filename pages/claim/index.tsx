@@ -8,6 +8,10 @@ import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 import { Artwork, WalletClaimArtworkRes } from "types/artwork";
 import { useActiveAccount, useActiveWallet } from "thirdweb/react";
+import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { Keypair, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
+
 enum STATUS {
   "LOADING",
   "SUCCESS",
@@ -15,6 +19,13 @@ enum STATUS {
 }
 
 export default function Component() {
+  const { connection } = useConnection();
+  const { publicKey, sendTransaction, wallet } = useWallet();
+
+  const wallet_address = publicKey?.toString();
+
+  console.log(wallet, 'wallet')
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const artworkId = searchParams.get("id");
@@ -25,25 +36,37 @@ export default function Component() {
   const [status, setStatus] = useState(STATUS.SUCCESS);
   const [artInfo, setArtInfo] = useState<Artwork>({} as Artwork);
   const activeAccount = useActiveAccount();
-  const wallet = useActiveWallet();
+  // const wallet = useActiveWallet();
   const [rewards, setRewards] = useState<WalletClaimArtworkRes | null>(null);
 
   const hasRewards = rewards !== null;
   const handleClaim = () => {
     claim()
   };
+
+  async function getKeypair(publicKey: PublicKey) {
+    const accountInfo: any = await connection.getAccountInfo(publicKey);
+    const keypair = new Keypair(accountInfo.data);
+    return keypair;
+  }
+
   const claim = async () => {
-    if (!wallet?.id) {
-      const ele = document.querySelector('#connectButton .content-btn') as HTMLButtonElement;
-      ele?.click()
-      return;
+    // if (!wallet?.id) {
+    //   const ele = document.querySelector('#connectButton .content-btn') as HTMLButtonElement;
+    //   ele?.click()
+    //   return;
+    // }
+    if (!wallet_address) {
+      return
     }
+
+
     setStatus(STATUS.LOADING);
     setLoading(true);
     try {
       const id = searchParams.get("id");
 
-      if (!wallet?.id || !id) {
+      if (!id) {
         return;
       }
   
@@ -55,8 +78,8 @@ export default function Component() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          wallet_address: activeAccount?.address,
-          wallet_type: wallet.id,
+          wallet_address,
+          wallet_type: 'solana',
           artwork_id: +id,
         }),
       });
@@ -101,7 +124,7 @@ export default function Component() {
   }, [searchParams]);
   const getReward = async () => {
     const id = searchParams.get("id");
-    if (!id || !activeAccount?.address) {
+    if (!id || !wallet_address) {
       setRewards(null)
       return;
     }
@@ -114,7 +137,7 @@ export default function Component() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        walletAddress: activeAccount?.address,
+        walletAddress: wallet_address,
         artworkId: +id,
       }),
     });
