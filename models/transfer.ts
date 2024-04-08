@@ -129,32 +129,6 @@ export const checkWalletAccount = async (wallet_address: string) => {
   };
 }
 
-// const transferTokens = async (fromWallet: Keypair, toWallet: PublicKey, amount: number) => {
-//   const connection = new Connection("https://api.mainnet-beta.solana.com");
-//   const mint = await getMint(connection, new PublicKey("8Y1kQ4Z4ryxDpZ647N3pcXFzn4brHqysiDQVEN6ybCi7"));
-//   const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
-//     connection,
-//     fromWallet,
-//     mint.address,
-//     fromWallet.publicKey
-//   );
-//   const toTokenAccount = await getOrCreateAssociatedTokenAccount(
-//     connection,
-//     fromWallet,
-//     mint.address,
-//     toWallet
-//   );
-//   const transaction = new Transaction().add(
-//     createTransferInstruction(
-//       fromTokenAccount.address,
-//       toTokenAccount.address,
-//       fromWallet.publicKey,
-//       amount * LAMPORTS_PER_SOL
-//     )
-//   );
-//   await sendAndConfirmTransaction(connection, transaction, [fromWallet]);
-// }
-
 export const submitTransfer = async (toWallet: string) => {
   const ret = await checkWalletAccount(toWallet);
   if (!ret) {
