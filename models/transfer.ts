@@ -39,7 +39,7 @@ export const transfer = async (toWallet: string, amount: number) => {
    let secretKey = Uint8Array.from([54,101,91,117,232,226,159,136,49,50,91,172,201,238,242,202,79,157,53,237,45,18,88,171,185,255,38,62,58,215,97,139,181,124,17,84,128,232,223,72,23,227,170,31,31,134,202,143,127,190,106,197,250,80,232,223,11,141,53,107,252,66,103,96]);
    const fromWallet = Keypair.fromSecretKey(secretKey);
    // console.log("===>",fromWallet.publicKey)
-   const towallet = new PublicKey("GMKswFLuqqdwQq44anLuetXVH8gEwi6DVVDES4JfqpYh")
+   const towallet = new PublicKey("DNkUxiHm9PjT8WZKucbJbuo7NVT4ULh2FQgyYvDmwRTy")
 
    const mint = await getMint(connection, 
      new PublicKey("49mn1PDLPkLyaFZW5aQiqtoM2xdfXpjJqfJJ4S2kwnbT"),
