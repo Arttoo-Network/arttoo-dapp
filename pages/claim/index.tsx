@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 import { Artwork, WalletClaimArtworkRes } from "types/artwork";
-import { useActiveAccount, useActiveWallet } from "thirdweb/react";
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Keypair, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
@@ -35,8 +34,6 @@ export default function Component() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(STATUS.SUCCESS);
   const [artInfo, setArtInfo] = useState<Artwork>({} as Artwork);
-  const activeAccount = useActiveAccount();
-  // const wallet = useActiveWallet();
   const [rewards, setRewards] = useState<WalletClaimArtworkRes | null>(null);
 
   const hasRewards = rewards !== null;
@@ -44,18 +41,7 @@ export default function Component() {
     claim()
   };
 
-  async function getKeypair(publicKey: PublicKey) {
-    const accountInfo: any = await connection.getAccountInfo(publicKey);
-    const keypair = new Keypair(accountInfo.data);
-    return keypair;
-  }
-
   const claim = async () => {
-    // if (!wallet?.id) {
-    //   const ele = document.querySelector('#connectButton .content-btn') as HTMLButtonElement;
-    //   ele?.click()
-    //   return;
-    // }
     if (!wallet_address) {
       return
     }
@@ -121,7 +107,8 @@ export default function Component() {
     };
    
     getArtwork();
-  }, [searchParams]);
+  }, [wallet_address, searchParams]);
+  
   const getReward = async () => {
     const id = searchParams.get("id");
     if (!id || !wallet_address) {
@@ -149,9 +136,10 @@ export default function Component() {
       setRewards(res)
     }
   };
+  
   useEffect(() => {
     getReward();
-  }, [activeAccount, searchParams])
+  }, [wallet_address, searchParams])
 
   return (
     <div className="max-w-md mx-auto">

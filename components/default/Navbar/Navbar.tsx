@@ -1,5 +1,4 @@
 "use client";
-import { useActiveAccount } from "thirdweb/react";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -7,48 +6,24 @@ import {
   WalletMultiButton
 } from '@solana/wallet-adapter-react-ui';
 
-// import { ConnectButton } from "thirdweb/react";
-// import { createWallet } from "thirdweb/wallets";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { create } from "domain";
 
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Keypair, SystemProgram, Transaction } from '@solana/web3.js';
 
-
-
-// const wallets = [
-//   createWallet("com.okex.wallet"),
-//   createWallet("app.phantom"),
-//   createWallet("com.trustwallet.app"),
-// ];
-
-{/* <WalletMultiButton />
-                    <WalletDisconnectButton /> */}
-
-console.log(
-  process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID,
-  "process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID"
-);
-const client = {
-  clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID || "",
-  secretKey: process.env.NEXT_PUBLIC_THIRDWEB_SECRET_KEY || "",
-};
-
 const Navbar = () => {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
+  const [wallet_address, setWalletAddress] = useState<string>('');
 
   useEffect(() => {
     if (!publicKey) {
       return;
     }
-    const wallet_address = publicKey.toString();
-    console.log("wallet_address", wallet_address, publicKey.toBase58);
-
+    setWalletAddress(publicKey.toString());
     saveUser(wallet_address, "solana");
   }, [publicKey]);
 
@@ -63,30 +38,38 @@ const Navbar = () => {
       path: '/token_reward'
     },
   ]
-  const activeAccount = useActiveAccount();
 
-  const connectButton : any = {
-    label: (
-      <span className="flex items-center text-xs">
+  // const connectButton : any = {
+  //   label: (
+  //     <span className="flex items-center text-xs">
+  //       <LogInIcon className="w-5 h-5" /> Log in
+  //     </span>
+  //   ),
+  //   className: "p-0 content-btn",
+  //   style: {
+  //     backgroundColor: "#fff",
+  //     padding: 0,
+  //     color: "#000",
+  //   },
+  // };
+
+  const connectButton = () => {
+    return (
+      <div className="flex items-center text-xs relative">
         <LogInIcon className="w-5 h-5" /> Log in
-      </span>
-    ),
-    className: "p-0 content-btn",
-    style: {
-      backgroundColor: "#fff",
-      padding: 0,
-      color: "#000",
-    },
-  };
-  const detailsButton = {
-    render: () => (
+        <WalletMultiButton className="hidden" />
+      </div>
+    )
+  } 
+  const detailsButton = () => {
+    return (
       <div className="flex items-center text-xs">
         <LogInIcon className="w-5 h-5" />
-        {activeAccount?.address?.slice(0, 5)}...
-        {activeAccount?.address?.slice(-4)}
+        {wallet_address?.slice(0, 5)}...
+        {wallet_address?.slice(-4)}
       </div>
-    ),
-  };
+    )
+  }
   const [show, setShow] = useState(false);
   const toggle = (event: React.MouseEvent<HTMLButtonElement> | MouseEvent) => {
     event.stopPropagation();
@@ -122,32 +105,7 @@ const Navbar = () => {
         </h1>
         <div id="connectButton" className="flex items-center">
           <WalletMultiButton />
-          {/* <ConnectButton
-            theme={"light"}
-            client={client}
-            wallets={wallets}
-            recommendedWallets={wallets}
-            connectButton={connectButton}
-            detailsButton={detailsButton}
-            connectModal={{
-              showThirdwebBranding: false,
-              size: "compact",
-            }}
-            onConnect={(wallet) => {
-              const accout = wallet.getAccount();
-              console.log("wallet", wallet, accout);
-
-              const id = wallet.id;
-              const wallet_address = accout?.address;
-
-              if (!wallet_address) {
-                return;
-              }
-
-              saveUser(wallet_address, id);
-            }}
-          /> */}
-
+          
           <Button
             onClick={toggle}
             className="flex items-center"

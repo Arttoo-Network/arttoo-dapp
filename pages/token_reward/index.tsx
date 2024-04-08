@@ -5,7 +5,6 @@
  */
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { useActiveAccount, useActiveWallet } from "thirdweb/react";
 import { WalletClaimArtworkWithDetails } from "types/artwork";
 import Image from "next/image";
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
@@ -19,35 +18,36 @@ export default function Component() {
     return sum + artwork.rewards;
   }, 0);
 
-  const activeAccount = useActiveAccount();
   useEffect(() => {
-    const getArtwork = async () => {
-      if (!wallet_address) {
-        return;
-      }
-
-      const uri = `/api/reward-list`;
-
-      const resp = await fetch(uri, {
-        method: "POST",
-        headers: {
-          "Content-Type": " application/json",
-        },
-        body: JSON.stringify({ walletAddress: wallet_address }),
-      });
-
-      const data = await resp.json();
-      setList(data);
-    };
-
     getArtwork();
     getUserInfoByWallet();
-  }, [activeAccount]);
+  }, [wallet_address]);
 
   const [claimedToken, setClaimedTokens] = useState(0);
 
+  const getArtwork = async () => {
+    if (!wallet_address) {
+      setList([]);
+      return;
+    }
+
+    const uri = `/api/reward-list`;
+
+    const resp = await fetch(uri, {
+      method: "POST",
+      headers: {
+        "Content-Type": " application/json",
+      },
+      body: JSON.stringify({ walletAddress: wallet_address }),
+    });
+
+    const data = await resp.json();
+    setList(data);
+  };
+
   const getUserInfoByWallet = async () => {
     if (!wallet_address) {
+      setClaimedTokens(0);
       return;
     }
 

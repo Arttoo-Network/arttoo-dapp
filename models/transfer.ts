@@ -30,7 +30,7 @@ import { getDb } from "./db";
 
 // export const transfer = async (fromWallet: Keypair, toWallet: PublicKey, amount: number) => {}
 
-const TRANSFER_SECRET_KEY = process.env.TRANSFER_SECRET_KEY as any;
+const TRANSFER_SECRET_KEY = process.env.TRANSFER_SECRET_KEY?.split(',').map(Number);
 
 console.log("TRANSFER_SECRET_KEY===>",TRANSFER_SECRET_KEY)
 

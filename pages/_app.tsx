@@ -1,10 +1,8 @@
 import Navbar from '@components/default/Navbar';
 import ResponsiveProvider from '@contexts/ResponsiveContext';
-import Web3Provider from '@contexts/Web3Context';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../theme/globals.css';
-import { AppWithProvider } from '@contexts/ThirdWeb/ThirdwebProvider';
 import {APIProvider, Map} from '@vis.gl/react-google-maps';
 import { Analytics } from "@vercel/analytics/react"
 import { SolanaProvider } from '@contexts/Sol/SolanaProvider';
@@ -41,8 +39,6 @@ const CreateNextjsDapp = ({ Component, pageProps }: AppProps) => {
 							</div>
 							<Analytics />
 							</SolanaProvider>
-
-							{/* <footer className= "bg-black h-12 sticky bottom-0 z-40 w-full flex-none"></footer> */}
 						</APIProvider>
 					</div>
 			</ResponsiveProvider>
