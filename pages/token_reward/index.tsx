@@ -84,7 +84,7 @@ export default function Component() {
     } else {
       console.error(message);
       setTimeout(() => {
-        alert('Network congestion, ' + message);
+        alert(message);
       }, 3000);
     }
   }

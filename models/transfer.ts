@@ -132,7 +132,8 @@ export const checkWalletAccount = async (wallet_address: string) => {
 export const submitTransfer = async (toWallet: string) => {
   const ret = await checkWalletAccount(toWallet);
   if (!ret) {
-    return { code: 400, message: "Invalid wallet address" };
+    // 你没有 claim 过任何 artwork
+    return { code: 400, message: "You don't have claimed rewards" };
   }
 
   const { total_rewards, claimed_tokens } = ret;
@@ -162,5 +163,5 @@ export const submitTransfer = async (toWallet: string) => {
     }
   }
 
-  return { code: 500, message: "Transfer failed" };
+  return { code: 500, message: "Network congestion, Transfer failed" };
 }
