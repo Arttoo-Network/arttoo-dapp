@@ -34,7 +34,8 @@ export const transfer = async (toWallet: string, amount: number) => {
   try {
     // Connect to cluster
     // const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
-    const connection = new Connection('https://api.devnet.solana.com');
+    // const connection = new Connection('https://api.devnet.solana.com');
+    const connection = new Connection('https://prettiest-special-arm.solana-devnet.quiknode.pro/900df112d8b1b76c89e2e33265c1b637907196f0/');
     let secretKey = Uint8Array.from([213,250,198,250,57,113,231,219,112,203,145,138,170,144,202,186,72,149,38,158,81,86,179,46,232,182,225,140,164,121,121,115,114,56,244,34,140,178,16,202,233,117,242,145,50,191,207,71,167,171,168,136,216,211,150,226,197,231,25,160,150,220,4,37]);
     const fromWallet = Keypair.fromSecretKey(secretKey);
     // console.log("===>",fromWallet.publicKey)
