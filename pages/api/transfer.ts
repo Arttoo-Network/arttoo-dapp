@@ -4,7 +4,7 @@ import { submitTransfer } from 'models/transfer';
 
 
 export const config = {
-  maxDuration: 200,
+  maxDuration: 30,
 };
  
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

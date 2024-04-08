@@ -19,10 +19,9 @@ POST {{baseUri}}/transfer-test
 Content-Type: application/json
 
 {
-  "wallet_address": "0x62a412068aBb2F85590EE8986c7F80eDFa1F4439",
-  "amount": 1
+  "wallet_address": "DNkUxiHm9PjT8WZKucbJbuo7NVT4ULh2FQgyYvDmwRTy",
+  "amount": 10
 }
-
 
 ### transfer
 POST https://arttoo.xyz/api/transfer
@@ -30,7 +29,7 @@ Content-Type: application/json
 
 {
   "wallet_address": "0x62a412068aBb2F85590EE8986c7F80eDFa1F4439",
-  "amount": 1
+  "amount": 10
 }
 
 
@@ -39,6 +38,6 @@ POST https://arttoo.xyz/api/transfer-test
 Content-Type: application/json
 
 {
-  "wallet_address": "0x62a412068aBb2F85590EE8986c7F80eDFa1F4439",
-  "amount": 1
+  "wallet_address": "DNkUxiHm9PjT8WZKucbJbuo7NVT4ULh2FQgyYvDmwRTy",
+  "amount": 10
 }

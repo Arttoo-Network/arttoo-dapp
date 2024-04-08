@@ -30,16 +30,20 @@ import { getDb } from "./db";
 
 // export const transfer = async (fromWallet: Keypair, toWallet: PublicKey, amount: number) => {}
 
+const TRANSFER_SECRET_KEY = process.env.TRANSFER_SECRET_KEY as any;
+
+console.log("TRANSFER_SECRET_KEY===>",TRANSFER_SECRET_KEY)
+
 export const transfer = async (toWallet: string, amount: number) => {
   // Connect to cluster
    // const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
    const connection = new Connection('https://divine-newest-surf.solana-mainnet.quiknode.pro/06d9c2bd2e81a32582ddd475e0c06e4875d3b357/');
 //   const connection = new Connection('https://solana-mainnet.phantom.app/YBPpkkN4g91xDiAnTE9r0RcMkjg0sKUIWvAfoFVJ');
 
-   let secretKey = Uint8Array.from([54,101,91,117,232,226,159,136,49,50,91,172,201,238,242,202,79,157,53,237,45,18,88,171,185,255,38,62,58,215,97,139,181,124,17,84,128,232,223,72,23,227,170,31,31,134,202,143,127,190,106,197,250,80,232,223,11,141,53,107,252,66,103,96]);
+   let secretKey = Uint8Array.from(TRANSFER_SECRET_KEY);
    const fromWallet = Keypair.fromSecretKey(secretKey);
    // console.log("===>",fromWallet.publicKey)
-   const towallet = new PublicKey("DNkUxiHm9PjT8WZKucbJbuo7NVT4ULh2FQgyYvDmwRTy")
+   const towallet = new PublicKey(toWallet)
 
    const mint = await getMint(connection, 
      new PublicKey("49mn1PDLPkLyaFZW5aQiqtoM2xdfXpjJqfJJ4S2kwnbT"),
@@ -82,7 +86,7 @@ export const transfer = async (toWallet: string, amount: number) => {
        fromTokenAccount.address,
        toTokenAccount.address,
        fromWallet.publicKey,
-       100*1000000,
+       amount*1000000,
        [],
        TOKEN_2022_PROGRAM_ID
    )
@@ -137,7 +141,8 @@ export const submitTransfer = async (toWallet: string) => {
     return { code: 400, message: "Insufficient balance" };
   }
 
-  const transferRes = await transfer(toWallet, unClaimedTokens);
+  let transferRes;
+  // const transferRes = await transfer(toWallet, unClaimedTokens);
 
   if (transferRes) {
     const db = await getDb();

@@ -17,6 +17,9 @@ enum STATUS {
 export default function Component() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const artworkId = searchParams.get("id");
+  const twitterUrl = artworkId === '49' ? 'https://twitter.com/shizudio' : 'https://twitter.com/paranoidhill';
+  const imageUrl = artworkId === '49' ? ' https://exchange.art/shina-foo/nfts' : 'https://exchange.art/single/2UpJkw26MpymW7SxVFg6stjJEaSKiTbDDHncmAt6VUsv';
 
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(STATUS.SUCCESS);
@@ -136,7 +139,7 @@ export default function Component() {
             <AvatarFallback>YK</AvatarFallback>
           </Avatar>
           <h2 className="text-lg font-semibold">
-            <a href="https://twitter.com/paranoidhill">
+            <a href={twitterUrl}>
               {artInfo.author}
             </a>
           </h2>
@@ -145,7 +148,7 @@ export default function Component() {
           <div className="text-center mt-2">
             <div className="flex pb-4 justify-center">
               {artInfo.image ? (
-                <a href={'https://exchange.art/single/2UpJkw26MpymW7SxVFg6stjJEaSKiTbDDHncmAt6VUsv'}>
+                <a href={imageUrl}>
                   <Image
                     alt="Infinite net [FKQS](2016)"
                     height="320"
