@@ -1,7 +1,7 @@
 import React, { FC, ReactNode, useMemo } from 'react';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { UnsafeBurnerWalletAdapter } from '@solana/wallet-adapter-wallets';
+import { UnsafeBurnerWalletAdapter, PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import {
     WalletModalProvider,
     WalletDisconnectButton,
@@ -33,6 +33,7 @@ export const SolanaProvider: FC<{ children: ReactNode }> = ({ children }) => {
              * instantiate its legacy wallet adapter here. Common legacy adapters can be found
              * in the npm package `@solana/wallet-adapter-wallets`.
              */
+            new PhantomWalletAdapter(),
             new UnsafeBurnerWalletAdapter(),
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,8 +44,6 @@ export const SolanaProvider: FC<{ children: ReactNode }> = ({ children }) => {
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>
-                    {/* <WalletMultiButton />
-                    <WalletDisconnectButton /> */}
                     {children}
                 </WalletModalProvider>
             </WalletProvider>
